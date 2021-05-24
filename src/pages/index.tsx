@@ -1,26 +1,75 @@
-import { useState } from 'react';
+import { useEffect, useState, FormEventHandler, useRef } from 'react';
 
-import { getCardDataFromName, Card } from '../services/cardData';
+import {
+  getCardDataFromName,
+  Card,
+  getCardNameAutoComplete,
+} from '../services/cardData';
 import useDebounce from '../utils/hooks/useDebounce';
 
 export default function Home() {
-  const [card, setCard] = useState<Card>();
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [possibleCards, setPossibleCards] = useState<string[]>([]);
+  const [deck, setDeck] = useState<Card[]>([]);
 
   const searchCard = useDebounce(
     async (text: string) => {
-      const possibleCard = await getCardDataFromName(text);
+      const exactCard = await getCardDataFromName(text);
 
-      possibleCard && setCard(possibleCard);
+      if (exactCard) setSelectedCard(exactCard);
+      else {
+        const possibleCardNames = await getCardNameAutoComplete(text);
+
+        setPossibleCards(possibleCardNames);
+      }
     },
     [],
     1000
   );
 
-  return (
-    <div>
-      <input type="text" onChange={e => searchCard(e.target.value)} />
+  const onSubmitCard: FormEventHandler = e => {
+    e.preventDefault();
 
-      <div>{card?.name}</div>
-    </div>
+    if (selectedCard) setDeck(current => [...current, selectedCard]);
+  };
+
+  useEffect(() => {
+    if (selectedCard) setPossibleCards([]);
+  }, [selectedCard]);
+
+  useEffect(() => {
+    setSelectedCard(null);
+  }, [deck]);
+
+  return (
+    <main>
+      <form onSubmit={onSubmitCard}>
+        <h2>Search</h2>
+
+        <input
+          ref={searchInputRef}
+          type="text"
+          onChange={e => searchCard(e.target.value)}
+        />
+      </form>
+
+      {possibleCards.length > 0 && (
+        <ul>
+          {possibleCards.map((cardName, index) => (
+            <li key={`cardName:${index}`}>{cardName}</li>
+          ))}
+        </ul>
+      )}
+
+      <h2>Deck</h2>
+
+      <ul>
+        {deck.map(card => (
+          <li key={card.id}>{`${card.mana_cost} ${card.name}`}</li>
+        ))}
+      </ul>
+    </main>
   );
 }
