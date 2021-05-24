@@ -1,2 +1,3 @@
 export * from './types';
-export * from './CardSearchClient';
+export * from './getCardDataFromName';
+export * from './getCardNameAutoComplete';

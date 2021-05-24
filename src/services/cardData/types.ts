@@ -7,7 +7,3 @@ export type Card = {
     large: string;
   };
 };
-
-export type CardsSearchResponseData = {
-  data: Card[];
-};
