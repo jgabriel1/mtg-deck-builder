@@ -40,7 +40,7 @@ export default function Home() {
   }, [selectedCard]);
 
   useEffect(() => {
-    setSelectedCard(null);
+    if (selectedCard) setSelectedCard(null);
   }, [deck]);
 
   return (
