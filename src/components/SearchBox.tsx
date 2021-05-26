@@ -36,7 +36,6 @@ export const SearchBox: React.FC = () => {
         type="submit"
         size="lg"
         colorScheme="blue"
-        background="blue.900"
         loadingText="aa"
         isLoading={isLoading}
       >

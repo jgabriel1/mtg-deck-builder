@@ -13,7 +13,14 @@ export const CardItem = ({
 }: CardItemProps) => {
   return (
     <ListItem>
-      <Button w="100%" variant="ghost" fontWeight="normal" fontSize="lg">
+      <Button
+        w="100%"
+        variant="ghost"
+        fontWeight="normal"
+        fontSize="lg"
+        colorScheme="whiteAlpha"
+        color="gray.100"
+      >
         <Grid templateColumns="repeat(16, 1fr)" gap="2" w="100%">
           <GridItem colSpan={1}>
             <Text textAlign="start">{quantity}</Text>
