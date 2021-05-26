@@ -1,4 +1,5 @@
-import { Input } from '@chakra-ui/input';
+import { FunctionComponent, FormEventHandler } from 'react';
+import { Input, InputProps } from '@chakra-ui/input';
 import {
   HStack,
   Button,
@@ -9,26 +10,40 @@ import {
   MenuButton,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
 
-type SearchBoxProps = {};
+interface SearchBoxProps extends InputProps {
+  onSubmitCard: FormEventHandler;
+  possibleCards: string[];
+}
 
-export const SearchBox: React.FC = () => {
+export const SearchBox: FunctionComponent<SearchBoxProps> = ({
+  onSubmitCard,
+  possibleCards,
+  onChange,
+}) => {
   const isLoading = false;
 
   return (
-    <HStack as="form" w="100%">
+    <HStack as="form" w="100%" onSubmit={onSubmitCard}>
       <Menu>
         <VStack w="100%">
-          <Input my="4" size="lg" placeholder="Search card name..." mb="8px" />
+          <Input
+            my="4"
+            size="lg"
+            placeholder="Search card name..."
+            mb="8px"
+            onChange={onChange}
+          />
 
           <MenuButton w="100%" visibility="hidden" />
         </VStack>
 
+        {/* TODO: Options are not working properly. */}
         <MenuList w="100%" mt="-4">
-          <MenuItem>Test1</MenuItem>
-          <MenuItem>Test2</MenuItem>
-          <MenuItem>Test3</MenuItem>
+          {possibleCards.length > 0 &&
+            possibleCards.map((card, index) => (
+              <MenuItem key={`possibleCards:${index}`}>{card}</MenuItem>
+            ))}
         </MenuList>
       </Menu>
 

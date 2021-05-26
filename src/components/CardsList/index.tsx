@@ -1,15 +1,29 @@
-import { Divider, List, ListItem } from '@chakra-ui/react';
+import { FunctionComponent } from 'react';
+import { List } from '@chakra-ui/react';
 import { CardItem } from './CardItem';
 
-type CardsListProps = {};
+type CardsListProps = {
+  cards: Array<{
+    quantity: number;
+    data: {
+      id: string;
+      name: string;
+      mana_cost: string;
+    };
+  }>;
+};
 
-export const CardsList = () => {
+export const CardsList: FunctionComponent<CardsListProps> = ({ cards }) => {
   return (
     <List spacing={1} w="100%">
-      <CardItem name="Sai, Master Thopterist" mana_cost="{2}{U}" />
-      <CardItem name="Island" quantity={10} />
-      <CardItem name="Silver Myr" mana_cost="{2}" />
-      <CardItem name="Manakin" mana_cost="{2}" />
+      {cards.map(card => (
+        <CardItem
+          key={`cardsList:${card.data.id}`}
+          quantity={card.quantity}
+          name={card.data.name}
+          mana_cost={card.data.mana_cost}
+        />
+      ))}
     </List>
   );
 };
