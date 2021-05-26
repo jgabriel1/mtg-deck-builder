@@ -1,18 +1,22 @@
-import { useEffect, useState, FormEventHandler, useRef } from 'react';
+import { Container, Flex, VStack } from '@chakra-ui/layout';
+import { FormEventHandler, useEffect, useState } from 'react';
 
+import { CardsList } from '../components/CardsList';
+import { Header } from '../components/Header';
+import { SearchBox } from '../components/SearchBox';
+import { useDeck } from '../hooks/deck';
 import {
-  getCardDataFromName,
   CardData,
+  getCardDataFromName,
   getCardNameAutoComplete,
 } from '../services/cardData';
 import useDebounce from '../utils/hooks/useDebounce';
 
-export default function Home() {
-  const searchInputRef = useRef<HTMLInputElement>(null);
+const Sketch = () => {
+  const { deck, addCard } = useDeck();
 
   const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
   const [possibleCards, setPossibleCards] = useState<string[]>([]);
-  const [deck, setDeck] = useState<CardData[]>([]);
 
   const searchCard = useDebounce(
     async (text: string) => {
@@ -32,7 +36,7 @@ export default function Home() {
   const onSubmitCard: FormEventHandler = e => {
     e.preventDefault();
 
-    if (selectedCard) setDeck(current => [...current, selectedCard]);
+    if (selectedCard) addCard(selectedCard);
   };
 
   useEffect(() => {
@@ -44,32 +48,22 @@ export default function Home() {
   }, [deck]);
 
   return (
-    <main>
-      <form onSubmit={onSubmitCard}>
-        <h2>Search</h2>
+    <Flex flexDir="column" h="100vh">
+      <Header />
 
-        <input
-          ref={searchInputRef}
-          type="text"
-          onChange={e => searchCard(e.target.value)}
-        />
-      </form>
+      <Container maxW="container.sm">
+        <VStack align="flex-start">
+          <SearchBox
+            onSubmitCard={onSubmitCard}
+            possibleCards={possibleCards}
+            onChange={e => searchCard(e.target.value)}
+          />
 
-      {possibleCards.length > 0 && (
-        <ul>
-          {possibleCards.map((cardName, index) => (
-            <li key={`cardName:${index}`}>{cardName}</li>
-          ))}
-        </ul>
-      )}
-
-      <h2>Deck</h2>
-
-      <ul>
-        {deck.map(card => (
-          <li key={card.id}>{`${card.mana_cost} ${card.name}`}</li>
-        ))}
-      </ul>
-    </main>
+          <CardsList cards={deck} />
+        </VStack>
+      </Container>
+    </Flex>
   );
-}
+};
+
+export default Sketch;
