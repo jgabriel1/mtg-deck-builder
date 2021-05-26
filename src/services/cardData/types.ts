@@ -1,4 +1,4 @@
-export type Card = {
+export type CardData = {
   id: string;
   name: string;
   mana_cost: string;

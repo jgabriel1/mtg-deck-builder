@@ -1,8 +1,8 @@
 import { client } from './client';
-import { Card } from './types';
+import { CardData } from './types';
 
 type CardsListResponse = {
-  data: Card[];
+  data: CardData[];
 };
 
 export const getCardsFromList = async (cardNames: string[]) => {

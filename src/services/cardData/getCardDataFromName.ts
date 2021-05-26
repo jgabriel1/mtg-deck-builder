@@ -1,9 +1,9 @@
 import { client } from './client';
-import { Card } from './types';
+import { CardData } from './types';
 
 export const getCardDataFromName = async (query: string) => {
   try {
-    const { data: possibleCard } = await client.get<Card>('cards/named', {
+    const { data: possibleCard } = await client.get<CardData>('cards/named', {
       params: {
         fuzzy: query,
         pretty: false,

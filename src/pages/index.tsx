@@ -2,7 +2,7 @@ import { useEffect, useState, FormEventHandler, useRef } from 'react';
 
 import {
   getCardDataFromName,
-  Card,
+  CardData,
   getCardNameAutoComplete,
 } from '../services/cardData';
 import useDebounce from '../utils/hooks/useDebounce';
@@ -10,9 +10,9 @@ import useDebounce from '../utils/hooks/useDebounce';
 export default function Home() {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
   const [possibleCards, setPossibleCards] = useState<string[]>([]);
-  const [deck, setDeck] = useState<Card[]>([]);
+  const [deck, setDeck] = useState<CardData[]>([]);
 
   const searchCard = useDebounce(
     async (text: string) => {
