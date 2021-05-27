@@ -1,5 +1,10 @@
+import {
+  FormEventHandler,
+  FunctionComponent,
+  useEffect,
+  useState,
+} from 'react';
 import { Container, Flex, VStack } from '@chakra-ui/layout';
-import { FormEventHandler, useEffect, useState } from 'react';
 
 import { CardsList } from '../components/CardsList';
 import { Header } from '../components/Header';
@@ -12,7 +17,7 @@ import {
 } from '../services/cardData';
 import useDebounce from '../utils/hooks/useDebounce';
 
-const Sketch = () => {
+const Home: FunctionComponent = () => {
   const { deck, addCard } = useDeck();
 
   const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
@@ -66,4 +71,4 @@ const Sketch = () => {
   );
 };
 
-export default Sketch;
+export default Home;
