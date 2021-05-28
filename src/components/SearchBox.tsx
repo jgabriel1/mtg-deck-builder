@@ -110,10 +110,9 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
           <MenuButton w="100%" visibility="hidden" />
         </VStack>
 
-        <MenuList w="100%" mt="-4" bg="gray.800">
-          {possibleCards &&
-            possibleCards.length > 0 &&
-            possibleCards.map((card, index) => (
+        {possibleCards && possibleCards.length > 0 && (
+          <MenuList w="100%" mt="-4" bg="gray.800">
+            {possibleCards.map((card, index) => (
               <MenuItem
                 key={`possibleCards:${index}`}
                 _hover={{ color: 'gray.800' }}
@@ -122,7 +121,8 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
                 {card}
               </MenuItem>
             ))}
-        </MenuList>
+          </MenuList>
+        )}
       </Menu>
 
       <Button
