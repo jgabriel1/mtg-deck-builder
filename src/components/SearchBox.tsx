@@ -1,5 +1,10 @@
-import { FormEventHandler, FunctionComponent, ChangeEventHandler } from 'react';
-import { Input, InputProps } from '@chakra-ui/input';
+import {
+  FormEventHandler,
+  FunctionComponent,
+  ChangeEventHandler,
+  useRef,
+} from 'react';
+import { Input } from '@chakra-ui/input';
 import {
   HStack,
   Button,
@@ -10,8 +15,9 @@ import {
   MenuButton,
   VStack,
 } from '@chakra-ui/react';
-import { CARD_DATA, POSSIBLE_CARD_NAMES } from '../data/keys';
 import { useMutation } from 'react-query';
+
+import { CARD_DATA, POSSIBLE_CARD_NAMES } from '../data/keys';
 import {
   CardData,
   getCardDataFromName,
@@ -28,7 +34,13 @@ type ChangeInputEventHandler = ChangeEventHandler<HTMLInputElement>;
 export const SearchBox: FunctionComponent<SearchBoxProps> = ({
   onSubmitCard,
 }) => {
-  const { mutate: mutatePossibleCards, data: possibleCards } = useMutation({
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const {
+    mutate: mutatePossibleCards,
+    data: possibleCards,
+    reset: resetPossibleCards,
+  } = useMutation({
     mutationKey: POSSIBLE_CARD_NAMES,
     mutationFn: async (q: string) => {
       console.log('fetched possibles');
@@ -48,7 +60,7 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
 
       return await getCardDataFromName(q);
     },
-    onSettled: (data, _, q) => {
+    onSuccess: (data, q) => {
       if (data === null) mutatePossibleCards(q);
     },
   });
@@ -60,21 +72,34 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
       onSubmitCard(selectedCard);
 
       resetSelectedCard();
+
+      if (inputRef.current) inputRef.current.value = '';
     }
   };
 
   const handleInputValueChange = withDebounce<ChangeInputEventHandler>(
-    e => mutateSelectedCard(e.target.value),
+    event => {
+      mutateSelectedCard(event.target.value);
+    },
     500
   );
+
+  const handleSelectPossibleCard = (cardName: string) => {
+    mutateSelectedCard(cardName, {
+      onSettled: () => {
+        resetPossibleCards();
+      },
+    });
+  };
 
   const isLoading = false;
 
   return (
     <HStack as="form" w="100%" onSubmit={handleSubmitCard}>
-      <Menu>
+      <Menu isOpen={possibleCards && possibleCards.length > 0}>
         <VStack w="100%">
           <Input
+            ref={inputRef}
             my="4"
             size="lg"
             placeholder="Search card name..."
@@ -85,13 +110,19 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
           <MenuButton w="100%" visibility="hidden" />
         </VStack>
 
-        {/* TODO: Options are not working properly.
-        <MenuList w="100%" mt="-4">
-          {possibleCards.length > 0 &&
+        <MenuList w="100%" mt="-4" bg="gray.800">
+          {possibleCards &&
+            possibleCards.length > 0 &&
             possibleCards.map((card, index) => (
-              <MenuItem key={`possibleCards:${index}`}>{card}</MenuItem>
+              <MenuItem
+                key={`possibleCards:${index}`}
+                _hover={{ color: 'gray.800' }}
+                onClick={() => handleSelectPossibleCard(card)}
+              >
+                {card}
+              </MenuItem>
             ))}
-        </MenuList> */}
+        </MenuList>
       </Menu>
 
       <Button
