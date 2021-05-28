@@ -1,4 +1,6 @@
-import { Button, Flex, Grid, GridItem, ListItem, Text } from '@chakra-ui/react';
+import { Button, Grid, GridItem, ListItem, Text } from '@chakra-ui/react';
+
+import { ManaSymbol } from '../ManaSymbol';
 
 type CardItemProps = {
   name: string;
@@ -33,7 +35,7 @@ export const CardItem = ({
           </GridItem>
 
           <GridItem colSpan={3}>
-            <Text textAlign="end">{mana_cost}</Text>
+            <ManaSymbol costString={mana_cost} />
           </GridItem>
         </Grid>
       </Button>
