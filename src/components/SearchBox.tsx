@@ -4,7 +4,6 @@ import {
   ChangeEventHandler,
   useRef,
 } from 'react';
-import { Input } from '@chakra-ui/input';
 import {
   HStack,
   Button,
@@ -14,6 +13,7 @@ import {
   MenuItem,
   MenuButton,
   VStack,
+  Input,
 } from '@chakra-ui/react';
 import { useMutation } from 'react-query';
 
