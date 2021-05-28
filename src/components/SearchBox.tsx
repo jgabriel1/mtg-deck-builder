@@ -43,11 +43,7 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
     isLoading: isPossibleCardsLoading,
   } = useMutation({
     mutationKey: POSSIBLE_CARD_NAMES,
-    mutationFn: async (q: string) => {
-      console.log('fetched possibles');
-
-      return await getCardNameAutoComplete(q);
-    },
+    mutationFn: getCardNameAutoComplete,
   });
 
   const {
@@ -57,11 +53,7 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
     isLoading: isSelectedCardLoading,
   } = useMutation({
     mutationKey: CARD_DATA,
-    mutationFn: async (q: string) => {
-      console.log('fetched');
-
-      return await getCardDataFromName(q);
-    },
+    mutationFn: getCardDataFromName,
     onSuccess: (data, q) => {
       if (data === null) mutatePossibleCards(q);
     },
