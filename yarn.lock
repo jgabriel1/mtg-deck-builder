@@ -2036,6 +2036,11 @@ make-dir@^3.0.2:
   dependencies:
     semver "^6.0.0"
 
+mana-font@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/mana-font/-/mana-font-1.10.0.tgz#19155db8ae4ab3b94494cc238b186d5dfeb6ac0a"
+  integrity sha512-FfwMSsRW1Hnjav12mLnOcP7BDEsZYNGMGbO808++eIYiyHW9vfJ7CUcVuGDjkd06hHt1m2IPBgZ3Oqw6JjhCpQ==
+
 match-sorter@^6.0.2:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/match-sorter/-/match-sorter-6.3.0.tgz#454a1b31ed218cddbce6231a0ecb5fdc549fed01"
