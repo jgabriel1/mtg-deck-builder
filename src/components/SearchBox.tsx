@@ -1,5 +1,9 @@
-import { FunctionComponent, FormEventHandler } from 'react';
-import { Input, InputProps } from '@chakra-ui/input';
+import {
+  FormEventHandler,
+  FunctionComponent,
+  ChangeEventHandler,
+  useRef,
+} from 'react';
 import {
   HStack,
   Button,
@@ -9,51 +13,113 @@ import {
   MenuItem,
   MenuButton,
   VStack,
+  Input,
 } from '@chakra-ui/react';
+import { useMutation } from 'react-query';
 
-interface SearchBoxProps extends InputProps {
-  onSubmitCard: FormEventHandler;
-  possibleCards: string[];
-}
+import { CARD_DATA, POSSIBLE_CARD_NAMES } from '../data/keys';
+import {
+  CardData,
+  getCardDataFromName,
+  getCardNameAutoComplete,
+} from '../services/cardData';
+import { withDebounce } from '../utils/withDebounce';
+
+type SearchBoxProps = {
+  onSubmitCard: (card: CardData) => void;
+};
+
+type ChangeInputEventHandler = ChangeEventHandler<HTMLInputElement>;
 
 export const SearchBox: FunctionComponent<SearchBoxProps> = ({
   onSubmitCard,
-  possibleCards,
-  onChange,
 }) => {
-  const isLoading = false;
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const {
+    mutate: mutatePossibleCards,
+    data: possibleCards,
+    reset: resetPossibleCards,
+    isLoading: isPossibleCardsLoading,
+  } = useMutation({
+    mutationKey: POSSIBLE_CARD_NAMES,
+    mutationFn: getCardNameAutoComplete,
+  });
+
+  const {
+    mutate: mutateSelectedCard,
+    data: selectedCard,
+    reset: resetSelectedCard,
+    isLoading: isSelectedCardLoading,
+  } = useMutation({
+    mutationKey: CARD_DATA,
+    mutationFn: getCardDataFromName,
+    onSuccess: (data, q) => {
+      if (data === null) mutatePossibleCards(q);
+    },
+  });
+
+  const handleSubmitCard: FormEventHandler = event => {
+    event.preventDefault();
+
+    if (selectedCard) {
+      onSubmitCard(selectedCard);
+
+      resetSelectedCard();
+
+      if (inputRef.current) inputRef.current.value = '';
+    }
+  };
+
+  const handleInputValueChange = withDebounce<ChangeInputEventHandler>(
+    event => {
+      mutateSelectedCard(event.target.value);
+    },
+    500
+  );
+
+  const handleSelectPossibleCard = (cardName: string) => {
+    mutateSelectedCard(cardName, {
+      onSettled: () => {
+        resetPossibleCards();
+      },
+    });
+  };
+
+  const isLoading = isSelectedCardLoading || isPossibleCardsLoading;
 
   return (
-    <HStack as="form" w="100%" onSubmit={onSubmitCard}>
-      <Menu>
+    <HStack as="form" w="100%" onSubmit={handleSubmitCard}>
+      <Menu isOpen={possibleCards && possibleCards.length > 0}>
         <VStack w="100%">
           <Input
+            ref={inputRef}
             my="4"
             size="lg"
             placeholder="Search card name..."
             mb="8px"
-            onChange={onChange}
+            onChange={handleInputValueChange}
           />
 
           <MenuButton w="100%" visibility="hidden" />
         </VStack>
 
-        {/* TODO: Options are not working properly. */}
-        <MenuList w="100%" mt="-4">
-          {possibleCards.length > 0 &&
-            possibleCards.map((card, index) => (
-              <MenuItem key={`possibleCards:${index}`}>{card}</MenuItem>
+        {possibleCards && possibleCards.length > 0 && (
+          <MenuList w="100%" mt="-4" bg="gray.800">
+            {possibleCards.map((card, index) => (
+              <MenuItem
+                key={`possibleCards:${index}`}
+                _hover={{ color: 'gray.800' }}
+                onClick={() => handleSelectPossibleCard(card)}
+              >
+                {card}
+              </MenuItem>
             ))}
-        </MenuList>
+          </MenuList>
+        )}
       </Menu>
 
-      <Button
-        type="submit"
-        size="lg"
-        colorScheme="blue"
-        loadingText="aa"
-        isLoading={isLoading}
-      >
+      <Button type="submit" size="lg" colorScheme="blue" isLoading={isLoading}>
         <Text>Add</Text>
       </Button>
     </HStack>

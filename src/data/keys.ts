@@ -1,0 +1,3 @@
+export const POSSIBLE_CARD_NAMES = 'POSSIBLE_CARD_NAMES';
+
+export const CARD_DATA = 'CARD_DATA';
