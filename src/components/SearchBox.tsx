@@ -40,6 +40,7 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
     mutate: mutatePossibleCards,
     data: possibleCards,
     reset: resetPossibleCards,
+    isLoading: isPossibleCardsLoading,
   } = useMutation({
     mutationKey: POSSIBLE_CARD_NAMES,
     mutationFn: async (q: string) => {
@@ -53,6 +54,7 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
     mutate: mutateSelectedCard,
     data: selectedCard,
     reset: resetSelectedCard,
+    isLoading: isSelectedCardLoading,
   } = useMutation({
     mutationKey: CARD_DATA,
     mutationFn: async (q: string) => {
@@ -92,7 +94,7 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
     });
   };
 
-  const isLoading = false;
+  const isLoading = isSelectedCardLoading || isPossibleCardsLoading;
 
   return (
     <HStack as="form" w="100%" onSubmit={handleSubmitCard}>
@@ -125,13 +127,7 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
         )}
       </Menu>
 
-      <Button
-        type="submit"
-        size="lg"
-        colorScheme="blue"
-        loadingText="aa"
-        isLoading={isLoading}
-      >
+      <Button type="submit" size="lg" colorScheme="blue" isLoading={isLoading}>
         <Text>Add</Text>
       </Button>
     </HStack>
