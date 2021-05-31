@@ -1,16 +1,11 @@
 import { FunctionComponent } from 'react';
 import { List } from '@chakra-ui/react';
+
 import { CardItem } from './CardItem';
+import { CardData } from '../../services/cardData';
 
 type CardsListProps = {
-  cards: Array<{
-    quantity: number;
-    data: {
-      id: string;
-      name: string;
-      mana_cost: string;
-    };
-  }>;
+  cards: Array<{ quantity: number; data: CardData }>;
 };
 
 export const CardsList: FunctionComponent<CardsListProps> = ({ cards }) => {
@@ -22,6 +17,7 @@ export const CardsList: FunctionComponent<CardsListProps> = ({ cards }) => {
           quantity={card.quantity}
           name={card.data.name}
           mana_cost={card.data.mana_cost}
+          imageUrl={card.data.image_uris.large}
         />
       ))}
     </List>
