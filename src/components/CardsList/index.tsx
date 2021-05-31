@@ -17,6 +17,7 @@ export const CardsList: FunctionComponent<CardsListProps> = ({ cards }) => {
           quantity={card.quantity}
           name={card.data.name}
           mana_cost={card.data.mana_cost}
+          imageUrl={card.data.image_uris.large}
         />
       ))}
     </List>
