@@ -49,6 +49,10 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
     },
   });
 
+  const resetInputValue = () => {
+    if (inputRef.current) inputRef.current.value = '';
+  };
+
   const handleSubmitCard: FormEventHandler = event => {
     event.preventDefault();
 
@@ -56,8 +60,7 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
       onSubmitCard(selectedCard);
 
       resetSelectedCard();
-
-      if (inputRef.current) inputRef.current.value = '';
+      resetInputValue();
     }
   };
 
@@ -70,8 +73,14 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
 
   const handleSelectPossibleCard = (cardName: string) => {
     mutateSelectedCard(cardName, {
-      onSettled: () => {
-        resetPossibleCards();
+      onSettled: cardData => {
+        if (cardData) {
+          onSubmitCard(cardData);
+
+          resetSelectedCard();
+          resetPossibleCards();
+          resetInputValue();
+        }
       },
     });
   };
