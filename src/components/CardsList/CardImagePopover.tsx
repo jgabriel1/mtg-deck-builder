@@ -1,3 +1,4 @@
+import { FunctionComponent } from 'react';
 import {
   Box,
   Image,
@@ -5,8 +6,8 @@ import {
   PopoverContent,
   PopoverProps,
   PopoverTrigger,
+  useDisclosure,
 } from '@chakra-ui/react';
-import { FunctionComponent } from 'react';
 
 interface CardImagePopoverProps extends PopoverProps {
   imageUrl: string;
@@ -17,9 +18,15 @@ export const CardImagePopover: FunctionComponent<CardImagePopoverProps> = ({
   imageUrl,
   ...rest
 }) => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   return (
-    <Popover {...rest} placement="right">
-      <PopoverTrigger>{children}</PopoverTrigger>
+    <Popover {...rest} placement="right" isOpen={isOpen}>
+      <PopoverTrigger>
+        <Box onMouseEnter={onOpen} onMouseLeave={onClose}>
+          {children}
+        </Box>
+      </PopoverTrigger>
 
       <PopoverContent w="inherit" bg="inherit" maxW="256" border="none">
         <Box borderRadius="xl">

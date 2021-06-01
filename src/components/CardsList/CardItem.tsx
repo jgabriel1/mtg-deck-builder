@@ -1,11 +1,4 @@
-import {
-  Button,
-  Grid,
-  GridItem,
-  ListItem,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Button, Grid, GridItem, ListItem, Text } from '@chakra-ui/react';
 
 import { CardImagePopover } from './CardImagePopover';
 import { ManaSymbol } from '../ManaSymbol';
@@ -23,11 +16,9 @@ export const CardItem = ({
   quantity = 1,
   imageUrl,
 }: CardItemProps) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
-
   return (
     <ListItem>
-      <CardImagePopover imageUrl={imageUrl} isOpen={isOpen}>
+      <CardImagePopover imageUrl={imageUrl}>
         <Button
           w="100%"
           variant="ghost"
@@ -35,8 +26,6 @@ export const CardItem = ({
           fontSize="lg"
           colorScheme="whiteAlpha"
           color="gray.100"
-          onMouseEnter={onOpen}
-          onMouseLeave={onClose}
         >
           <Grid templateColumns="repeat(16, 1fr)" gap="2" w="100%">
             <GridItem colSpan={1}>
