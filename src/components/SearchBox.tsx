@@ -15,15 +15,10 @@ import {
   VStack,
   Input,
 } from '@chakra-ui/react';
-import { useMutation } from 'react-query';
 
-import { CARD_DATA, POSSIBLE_CARD_NAMES } from '../data/keys';
-import {
-  CardData,
-  getCardDataFromName,
-  getCardNameAutoComplete,
-} from '../services/cardData';
+import { CardData } from '../services/cardData';
 import { withDebounce } from '../utils/withDebounce';
+import { usePossibleCards, useSelectedCard } from '../data';
 
 type SearchBoxProps = {
   onSubmitCard: (card: CardData) => void;
@@ -37,25 +32,20 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const {
-    mutate: mutatePossibleCards,
-    data: possibleCards,
-    reset: resetPossibleCards,
-    isLoading: isPossibleCardsLoading,
-  } = useMutation({
-    mutationKey: POSSIBLE_CARD_NAMES,
-    mutationFn: getCardNameAutoComplete,
-  });
+    mutatePossibleCards,
+    possibleCards,
+    resetPossibleCards,
+    isPossibleCardsLoading,
+  } = usePossibleCards();
 
   const {
-    mutate: mutateSelectedCard,
-    data: selectedCard,
-    reset: resetSelectedCard,
-    isLoading: isSelectedCardLoading,
-  } = useMutation({
-    mutationKey: CARD_DATA,
-    mutationFn: getCardDataFromName,
-    onSuccess: (data, q) => {
-      if (data === null) mutatePossibleCards(q);
+    mutateSelectedCard,
+    selectedCard,
+    resetSelectedCard,
+    isSelectedCardLoading,
+  } = useSelectedCard({
+    onCardNotFound: q => {
+      mutatePossibleCards(q);
     },
   });
 
