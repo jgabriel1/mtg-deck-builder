@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { Divider, Heading, VStack } from '@chakra-ui/react';
+import { Container, Divider, Heading } from '@chakra-ui/react';
 
 type CardBlockProps = {
   title: string;
@@ -12,12 +12,14 @@ export const CardBlock: FunctionComponent<CardBlockProps> = ({
   isLast,
 }) => {
   return (
-    <VStack>
-      <Heading>{title}</Heading>
+    <Container>
+      <Heading size="md" fontWeight="semibold" mb="4">
+        {title}
+      </Heading>
 
       {children}
 
-      {!isLast && <Divider />}
-    </VStack>
+      {!isLast && <Divider mt="4" mb="8" borderColor="gray.400" />}
+    </Container>
   );
 };
