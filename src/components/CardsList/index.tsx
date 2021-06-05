@@ -1,6 +1,5 @@
 import { FunctionComponent, useMemo } from 'react';
 import { List } from '@chakra-ui/react';
-import { CardItem } from './CardItem';
 import { CardBlock } from './CardBlock';
 import { CardData } from '../../services/cardData';
 import { CardType, parseCardType } from '../../services/cardData/util';
@@ -41,17 +40,7 @@ export const CardsList: FunctionComponent<CardsListProps> = ({ cards }) => {
   return (
     <List spacing={1} w="100%">
       {blocks.map(block => (
-        <CardBlock title={block.title}>
-          {block.cards.map(card => (
-            <CardItem
-              key={`cardsList:${card.data.id}`}
-              quantity={card.quantity}
-              name={card.data.name}
-              mana_cost={card.data.mana_cost}
-              imageUrl={card.data.image_uris.large}
-            />
-          ))}
-        </CardBlock>
+        <CardBlock title={block.title} cards={block.cards} />
       ))}
     </List>
   );

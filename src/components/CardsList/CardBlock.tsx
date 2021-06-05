@@ -1,25 +1,61 @@
-import { FunctionComponent } from 'react';
-import { Container, Divider, Heading } from '@chakra-ui/react';
+import { FunctionComponent, useMemo } from 'react';
+import {
+  Container,
+  Divider,
+  Flex,
+  Heading,
+  List,
+  ListItem,
+  Text,
+} from '@chakra-ui/react';
+import { CardItem } from './CardItem';
+import { CardData } from '../../services/cardData';
+
+type CardItemData = {
+  quantity: number;
+  data: CardData;
+};
 
 type CardBlockProps = {
   title: string;
-  isLast?: boolean;
+  cards: CardItemData[];
 };
 
 export const CardBlock: FunctionComponent<CardBlockProps> = ({
-  children,
   title,
-  isLast,
+  cards,
 }) => {
+  const totalCards = useMemo(() => {
+    return cards.reduce((accum, card) => accum + card.quantity, 0);
+  }, [cards]);
+
   return (
     <Container>
-      <Heading size="md" fontWeight="semibold" mb="4">
-        {title}
-      </Heading>
+      <Flex justify="space-between" align="center">
+        <Heading size="md" fontWeight="semibold" mb="4">
+          {title}
+        </Heading>
 
-      {children}
+        <Text fontSize="sm" fontWeight="medium" color="gray.300">
+          {`(${totalCards})`}
+        </Text>
+      </Flex>
 
-      {!isLast && <Divider mt="4" mb="8" borderColor="gray.400" />}
+      <List>
+        {cards.map(card => (
+          <ListItem>
+            <CardItem
+              key={`cardsList:${card.data.id}`}
+              quantity={card.quantity}
+              name={card.data.name}
+              mana_cost={card.data.mana_cost}
+              imageUrl={card.data.image_uris.large}
+            />
+          </ListItem>
+        ))}
+      </List>
+
+      <Divider mt="4" mb="8" borderColor="gray.400" />
     </Container>
   );
 };
