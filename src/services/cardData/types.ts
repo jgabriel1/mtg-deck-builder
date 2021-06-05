@@ -6,4 +6,6 @@ export type CardData = {
     normal: string;
     large: string;
   };
+  cmc: number;
+  type_line: string;
 };
