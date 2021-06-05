@@ -34,7 +34,13 @@ export const CardsList: FunctionComponent<CardsListProps> = ({ cards }) => {
 
     return Array.from(cardBlocks)
       .map(([cardType, cards]) => ({ title: cardType, cards }))
-      .sort((a, b) => a.title.localeCompare(b.title));
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .map(block => ({
+        title: block.title,
+        cards: block.cards.sort((a, b) =>
+          a.data.name.localeCompare(b.data.name)
+        ),
+      }));
   }, [cards]);
 
   return (
