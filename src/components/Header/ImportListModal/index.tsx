@@ -39,6 +39,7 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
   const [listString, setListString] = useState('');
 
   const [isParseListError, setIsParseListError] = useState(false);
+  const [cardsNotFound, setCardsNotFound] = useState<string[]>([]);
 
   const onChangeListInput: ChangeEventHandler<HTMLTextAreaElement> = e => {
     const { value } = e.target;
@@ -63,7 +64,7 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
               }))
             );
 
-            modalProps.onClose();
+            setCardsNotFound(notFound.map(c => c.name));
           },
         }
       );
@@ -76,57 +77,65 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
     return () => {
       setListString('');
       setIsParseListError(false);
+      setCardsNotFound([]);
     };
   }, [modalProps.isOpen]);
 
   useEffect(() => {
     setIsParseListError(false);
+    setCardsNotFound([]);
   }, [listString]);
 
   return (
-    <Modal {...modalProps}>
-      <ModalOverlay />
+    <>
+      <Modal {...modalProps}>
+        <ModalOverlay />
 
-      <ModalContent bg="gray.800">
-        <ModalHeader>Import from list</ModalHeader>
-        <ModalCloseButton />
+        <ModalContent bg="gray.800">
+          <ModalHeader>Import from list</ModalHeader>
+          <ModalCloseButton />
 
-        <ModalBody>
-          <Textarea
-            value={listString}
-            isInvalid={isParseListError}
-            onChange={onChangeListInput}
-            placeholder={`1 Sol Ring\n10 Mountain\n...`}
-            resize="none"
-            size="md"
-            h="sm"
-          />
-        </ModalBody>
+          <ModalBody>
+            <Textarea
+              value={listString}
+              isInvalid={isParseListError}
+              onChange={onChangeListInput}
+              placeholder={`1 Sol Ring\n10 Mountain\n...`}
+              resize="none"
+              size="md"
+              h="sm"
+            />
+          </ModalBody>
 
-        <ModalFooter>
-          <HStack>
-            <VStack>
-              {isParseListError && (
-                <Alert status="error" borderRadius="lg" bg="none">
-                  <AlertIcon />
+          <ModalFooter>
+            <HStack>
+              <VStack>
+                {isParseListError && (
+                  <Alert status="error" borderRadius="lg" bg="none">
+                    <AlertIcon />
 
-                  <AlertTitle fontSize="sm" fontWeight="medium" color="red.400">
-                    Please input a list in the supported format.
-                  </AlertTitle>
-                </Alert>
-              )}
-            </VStack>
+                    <AlertTitle
+                      fontSize="sm"
+                      fontWeight="semibold"
+                      color="red.400"
+                    >
+                      Please input a list in the supported format.
+                    </AlertTitle>
+                  </Alert>
+                )}
+              </VStack>
 
-            <Button
-              colorScheme="blue"
-              onClick={handleSubmitList}
-              isLoading={isCardListLoading}
-            >
-              Submit
-            </Button>
-          </HStack>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+              <Button
+                colorScheme="blue"
+                onClick={handleSubmitList}
+                isLoading={isCardListLoading}
+              >
+                Submit
+              </Button>
+            </HStack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
