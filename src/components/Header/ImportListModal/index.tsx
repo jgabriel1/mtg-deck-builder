@@ -1,4 +1,4 @@
-import { FunctionComponent, useRef } from 'react';
+import { FunctionComponent, useState } from 'react';
 import {
   Button,
   Modal,
@@ -14,8 +14,7 @@ import {
 import { parseCardList } from './parseCardList';
 
 import { useDeck } from '../../../hooks/deck';
-import { getCardsFromList } from '../../../services/cardData/getCardsFromList';
-import { useMutation } from 'react-query';
+import { useCardList } from '../../../data/useCardList';
 
 interface ImportListModalProps extends Omit<ModalProps, 'children'> {}
 
@@ -24,31 +23,30 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
 }) => {
   const { setAllCards } = useDeck();
 
-  const pasteListTextAreaRef = useRef<HTMLTextAreaElement>(null);
+  const { mutateCardList, isCardListLoading } = useCardList();
+
+  const [listString, setListString] = useState('');
 
   const handleSubmitList = async () => {
-    const listString = pasteListTextAreaRef.current?.value;
-
-    if (!listString) return;
-
     const parsedCardsData = parseCardList(listString);
 
-    const fetchedCardsData = await getCardsFromList(
-      parsedCardsData.map(card => card.cardName)
+    mutateCardList(
+      parsedCardsData.map(card => card.cardName),
+      {
+        onSuccess: fetchedCardsData => {
+          setAllCards(
+            fetchedCardsData.map(card => ({
+              quantity:
+                parsedCardsData.find(c => c.cardName === card.name)?.quantity ||
+                1,
+              data: card,
+            }))
+          );
+
+          modalProps.onClose();
+        },
+      }
     );
-
-    setAllCards(
-      fetchedCardsData.map(card => {
-        const parsedCard = parsedCardsData.find(c => c.cardName === card.name);
-
-        return {
-          quantity: parsedCard?.quantity || 1,
-          data: card,
-        };
-      })
-    );
-
-    modalProps.onClose();
   };
 
   return (
@@ -61,7 +59,8 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
 
         <ModalBody>
           <Textarea
-            ref={pasteListTextAreaRef}
+            value={listString}
+            onChange={e => setListString(e.target.value)}
             placeholder={`1 Sol Ring\n10 Mountain\n...`}
             resize="none"
             size="md"
@@ -70,7 +69,11 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="blue" onClick={handleSubmitList}>
+          <Button
+            colorScheme="blue"
+            onClick={handleSubmitList}
+            isLoading={isCardListLoading}
+          >
             Submit
           </Button>
         </ModalFooter>
