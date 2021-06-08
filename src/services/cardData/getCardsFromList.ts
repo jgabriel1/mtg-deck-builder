@@ -2,7 +2,8 @@ import { client } from './client';
 import { CardData } from './types';
 
 type CardsListResponse = {
-  data: CardData[];
+  data: Array<CardData>;
+  not_found: Array<{ name: string }>;
 };
 
 export const getCardsFromList = async (cardNames: string[]) => {
@@ -20,5 +21,8 @@ export const getCardsFromList = async (cardNames: string[]) => {
     }
   );
 
-  return responseData.data;
+  return {
+    cards: responseData.data,
+    notFound: responseData.not_found,
+  };
 };

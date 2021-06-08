@@ -53,9 +53,9 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
       mutateCardList(
         parsedCardsData.map(card => card.cardName),
         {
-          onSuccess: fetchedCardsData => {
+          onSuccess: ({ cards, notFound }) => {
             setAllCards(
-              fetchedCardsData.map(card => ({
+              cards.map(card => ({
                 quantity:
                   parsedCardsData.find(c => c.cardName === card.name)
                     ?.quantity || 1,
