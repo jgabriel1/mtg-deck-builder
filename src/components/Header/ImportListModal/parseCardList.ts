@@ -1,4 +1,4 @@
-import { ParseListError } from './ParseListError';
+export class ParseListError extends Error {}
 
 export const parseCardList = (listString: string) => {
   try {

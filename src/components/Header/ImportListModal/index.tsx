@@ -21,11 +21,10 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { parseCardList } from './parseCardList';
+import { parseCardList, ParseListError } from './parseCardList';
 
 import { useDeck } from '../../../hooks/deck';
 import { useCardList } from '../../../data/useCardList';
-import { ParseListError } from './ParseListError';
 
 interface ImportListModalProps extends Omit<ModalProps, 'children'> {}
 
