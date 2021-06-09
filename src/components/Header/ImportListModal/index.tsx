@@ -9,7 +9,8 @@ import {
   AlertIcon,
   AlertTitle,
   Button,
-  HStack,
+  Flex,
+  ListItem,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -19,6 +20,7 @@ import {
   ModalOverlay,
   ModalProps,
   Textarea,
+  UnorderedList,
   VStack,
 } from '@chakra-ui/react';
 import { parseCardList, ParseListError } from './parseCardList';
@@ -86,55 +88,81 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
   }, [listString]);
 
   return (
-    <>
-      <Modal {...modalProps}>
-        <ModalOverlay />
+    <Modal {...modalProps}>
+      <ModalOverlay />
 
-        <ModalContent bg="gray.800">
-          <ModalHeader>Import from list</ModalHeader>
-          <ModalCloseButton />
+      <ModalContent bg="gray.800">
+        <ModalHeader>Import from list</ModalHeader>
+        <ModalCloseButton />
 
-          <ModalBody>
-            <Textarea
-              value={listString}
-              isInvalid={isParseListError}
-              onChange={onChangeListInput}
-              placeholder={`1 Sol Ring\n10 Mountain\n...`}
-              resize="none"
-              size="md"
-              h="sm"
-            />
-          </ModalBody>
+        <ModalBody>
+          <Textarea
+            value={listString}
+            isInvalid={isParseListError}
+            onChange={onChangeListInput}
+            placeholder={`1 Sol Ring\n10 Mountain\n...`}
+            resize="none"
+            size="md"
+            h="sm"
+          />
+        </ModalBody>
 
-          <ModalFooter>
-            <HStack>
-              <VStack>
-                {isParseListError && (
-                  <Alert status="error" borderRadius="lg" bg="none">
+        <ModalFooter>
+          <Flex w="100%" justify="space-between" align="center">
+            <VStack>
+              {isParseListError && (
+                <Alert status="error" borderRadius="lg" bg="none">
+                  <AlertIcon />
+
+                  <AlertTitle
+                    fontSize="sm"
+                    fontWeight="semibold"
+                    color="red.400"
+                  >
+                    Please input a list in the supported format!
+                  </AlertTitle>
+                </Alert>
+              )}
+
+              {cardsNotFound.length > 0 && (
+                <VStack w="100%" spacing="2">
+                  <Alert status="warning" borderRadius="lg" bg="none" pb="0">
                     <AlertIcon />
 
                     <AlertTitle
                       fontSize="sm"
                       fontWeight="semibold"
-                      color="red.400"
+                      color="yellow.500"
                     >
-                      Please input a list in the supported format.
+                      Some cards were not found:
                     </AlertTitle>
                   </Alert>
-                )}
-              </VStack>
 
-              <Button
-                colorScheme="blue"
-                onClick={handleSubmitList}
-                isLoading={isCardListLoading}
-              >
-                Submit
-              </Button>
-            </HStack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+                  <UnorderedList w="inherit" pl="16">
+                    {cardsNotFound.map(cardName => (
+                      <ListItem
+                        key={`cardsNotFound:${cardName}`}
+                        fontSize="sm"
+                        color="yellow.500"
+                      >
+                        {cardName}
+                      </ListItem>
+                    ))}
+                  </UnorderedList>
+                </VStack>
+              )}
+            </VStack>
+
+            <Button
+              colorScheme="blue"
+              onClick={handleSubmitList}
+              isLoading={isCardListLoading}
+            >
+              Submit
+            </Button>
+          </Flex>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
