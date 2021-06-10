@@ -10,6 +10,7 @@ type DeckContextData = {
   deck: Card[];
   addCard: (cardData: CardData) => void;
   removeCard: (cardId: string) => void;
+  setAllCards: (cards: Card[]) => void;
 };
 
 const DeckContext = createContext({} as DeckContextData);
@@ -35,13 +36,15 @@ export const DeckProvider: FunctionComponent = ({ children }) => {
     setDeck(current => current.filter(card => card.data.id !== cardId));
   };
 
+  const setAllCards = (cards: Card[]) => {
+    setDeck(cards);
+  };
+
   return (
-    <DeckContext.Provider value={{ deck, addCard, removeCard }}>
+    <DeckContext.Provider value={{ deck, addCard, removeCard, setAllCards }}>
       {children}
     </DeckContext.Provider>
   );
 };
 
-export function useDeck() {
-  return useContext(DeckContext);
-}
+export const useDeck = () => useContext(DeckContext);
