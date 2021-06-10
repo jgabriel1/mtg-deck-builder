@@ -5,7 +5,7 @@ import {
   Heading,
   useDisclosure,
 } from '@chakra-ui/react';
-import { ImportListModal } from './ImportListModal';
+import { ImportListModal } from '../ImportListModal';
 
 export const Header = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();

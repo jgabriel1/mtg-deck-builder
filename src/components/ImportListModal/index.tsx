@@ -25,8 +25,8 @@ import {
 } from '@chakra-ui/react';
 import { parseCardList, ParseListError } from './parseCardList';
 
-import { useDeck } from '../../../hooks/deck';
-import { useCardList } from '../../../data/useCardList';
+import { useDeck } from '../../hooks/deck';
+import { useCardList } from '../../data/useCardList';
 
 interface ImportListModalProps extends Omit<ModalProps, 'children'> {}
 
