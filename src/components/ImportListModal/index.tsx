@@ -114,6 +114,8 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
 
     if (cardsWereFound && noCardsWereNotFound) {
       addFoundCardsToDeck();
+
+      modalProps.onClose();
     }
   }, [cards.found, cards.notFound]);
 
