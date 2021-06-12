@@ -108,6 +108,15 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
     resetCards();
   }, [listString]);
 
+  useEffect(() => {
+    const cardsWereFound = cards.found.length > 0;
+    const noCardsWereNotFound = !(cards.notFound.length > 0);
+
+    if (cardsWereFound && noCardsWereNotFound) {
+      addFoundCardsToDeck();
+    }
+  }, [cards.found, cards.notFound]);
+
   return (
     <Modal {...modalProps}>
       <ModalOverlay />
