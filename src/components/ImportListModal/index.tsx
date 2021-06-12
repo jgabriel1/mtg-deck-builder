@@ -28,6 +28,16 @@ import { parseCardList, ParseListError } from './parseCardList';
 import { useDeck } from '../../hooks/deck';
 import { useCardList } from '../../data/useCardList';
 
+import { CardData } from '../../services/cardData';
+
+type FetchedCardsState = {
+  found: Array<{
+    data: CardData;
+    quantity: number;
+  }>;
+  notFound: string[];
+};
+
 interface ImportListModalProps extends Omit<ModalProps, 'children'> {}
 
 export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
@@ -40,12 +50,24 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
   const [listString, setListString] = useState('');
 
   const [isParseListError, setIsParseListError] = useState(false);
-  const [cardsNotFound, setCardsNotFound] = useState<string[]>([]);
+
+  const [cards, dispatchCards] = useState<FetchedCardsState>({
+    found: [],
+    notFound: [],
+  });
 
   const onChangeListInput: ChangeEventHandler<HTMLTextAreaElement> = e => {
     const { value } = e.target;
 
     setListString(value);
+  };
+
+  const addFoundCardsToDeck = () => {
+    setAllCards(cards.found);
+  };
+
+  const resetCards = () => {
+    dispatchCards({ found: [], notFound: [] });
   };
 
   const handleSubmitList = async () => {
@@ -56,16 +78,15 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
         parsedCardsData.map(card => card.cardName),
         {
           onSuccess: ({ cards, notFound }) => {
-            setAllCards(
-              cards.map(card => ({
+            dispatchCards({
+              found: cards.map(card => ({
                 quantity:
                   parsedCardsData.find(c => c.cardName === card.name)
                     ?.quantity || 1,
                 data: card,
-              }))
-            );
-
-            setCardsNotFound(notFound.map(c => c.name));
+              })),
+              notFound: notFound.map(c => c.name),
+            });
           },
         }
       );
@@ -78,13 +99,13 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
     return () => {
       setListString('');
       setIsParseListError(false);
-      setCardsNotFound([]);
+      resetCards();
     };
   }, [modalProps.isOpen]);
 
   useEffect(() => {
     setIsParseListError(false);
-    setCardsNotFound([]);
+    resetCards();
   }, [listString]);
 
   return (
@@ -124,7 +145,7 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
                 </Alert>
               )}
 
-              {cardsNotFound.length > 0 && (
+              {cards.notFound.length > 0 && (
                 <VStack w="100%" spacing="2">
                   <Alert status="warning" borderRadius="lg" bg="none" pb="0">
                     <AlertIcon />
@@ -139,7 +160,7 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
                   </Alert>
 
                   <UnorderedList w="inherit" pl="16">
-                    {cardsNotFound.map(cardName => (
+                    {cards.notFound.map(cardName => (
                       <ListItem
                         key={`cardsNotFound:${cardName}`}
                         fontSize="sm"
