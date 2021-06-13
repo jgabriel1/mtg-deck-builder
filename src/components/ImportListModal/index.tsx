@@ -1,4 +1,4 @@
-import {
+import React, {
   ChangeEventHandler,
   FunctionComponent,
   useEffect,
@@ -8,6 +8,7 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
+  AlertDescription,
   Button,
   Flex,
   ListItem,
@@ -20,8 +21,9 @@ import {
   ModalOverlay,
   ModalProps,
   Textarea,
-  UnorderedList,
   VStack,
+  HStack,
+  OrderedList,
 } from '@chakra-ui/react';
 import { parseCardList, ParseListError } from './parseCardList';
 
@@ -43,7 +45,7 @@ interface ImportListModalProps extends Omit<ModalProps, 'children'> {}
 export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
   ...modalProps
 }) => {
-  const { setAllCards } = useDeck();
+  const { setAllCards: addAllCardsToDeck } = useDeck();
 
   const { mutateCardList, isCardListLoading } = useCardList();
 
@@ -62,10 +64,6 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
     setListString(value);
   };
 
-  const addFoundCardsToDeck = () => {
-    setAllCards(cards.found);
-  };
-
   const resetCards = () => {
     dispatchCards({ found: [], notFound: [] });
   };
@@ -79,12 +77,16 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
         {
           onSuccess: ({ cards, notFound }) => {
             dispatchCards({
-              found: cards.map(card => ({
-                quantity:
+              found: cards.map(card => {
+                const quantity =
                   parsedCardsData.find(c => c.cardName === card.name)
-                    ?.quantity || 1,
-                data: card,
-              })),
+                    ?.quantity || 1;
+
+                return {
+                  quantity,
+                  data: card,
+                };
+              }),
               notFound: notFound.map(c => c.name),
             });
           },
@@ -93,6 +95,12 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
     } catch (err) {
       if (err instanceof ParseListError) setIsParseListError(true);
     }
+  };
+
+  const handleAddCardsToDeck = () => {
+    addAllCardsToDeck(cards.found);
+
+    modalProps.onClose();
   };
 
   useEffect(() => {
@@ -113,7 +121,7 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
     const noCardsWereNotFound = !(cards.notFound.length > 0);
 
     if (cardsWereFound && noCardsWereNotFound) {
-      addFoundCardsToDeck();
+      addAllCardsToDeck(cards.found);
 
       modalProps.onClose();
     }
@@ -132,67 +140,83 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
             value={listString}
             isInvalid={isParseListError}
             onChange={onChangeListInput}
-            placeholder={`1 Sol Ring\n10 Mountain\n...`}
+            placeholder={`1 Sol Ring\n10 Mountain`}
             resize="none"
             size="md"
             h="sm"
           />
-        </ModalBody>
 
-        <ModalFooter>
-          <Flex w="100%" justify="space-between" align="center">
-            <VStack>
-              {isParseListError && (
-                <Alert status="error" borderRadius="lg" bg="none">
-                  <AlertIcon />
+          <VStack w="100%">
+            {isParseListError && (
+              <Alert status="error" borderRadius="lg" bg="none">
+                <AlertIcon />
 
-                  <AlertTitle
-                    fontSize="sm"
-                    fontWeight="semibold"
-                    color="red.400"
-                  >
-                    Please input a list in the supported format!
-                  </AlertTitle>
-                </Alert>
-              )}
+                <AlertTitle fontSize="sm" fontWeight="semibold" color="red.400">
+                  Please input a list in the supported format!
+                </AlertTitle>
+              </Alert>
+            )}
 
-              {cards.notFound.length > 0 && (
-                <VStack w="100%" spacing="2">
-                  <Alert status="warning" borderRadius="lg" bg="none" pb="0">
+            {cards.notFound.length > 0 && (
+              <Alert
+                status="warning"
+                borderRadius="lg"
+                bg="none"
+                pb="0"
+                fontSize="sm"
+                color="yellow.500"
+              >
+                <Flex flexDir="column" justify="flex-start" w="100%">
+                  <Flex flexDir="row" align="center" mb="2">
                     <AlertIcon />
 
-                    <AlertTitle
-                      fontSize="sm"
-                      fontWeight="semibold"
-                      color="yellow.500"
-                    >
+                    <AlertTitle fontWeight="semibold">
                       Some cards were not found:
                     </AlertTitle>
-                  </Alert>
+                  </Flex>
 
-                  <UnorderedList w="inherit" pl="16">
+                  <OrderedList w="inherit" pl="8" mb="2">
                     {cards.notFound.map(cardName => (
-                      <ListItem
-                        key={`cardsNotFound:${cardName}`}
-                        fontSize="sm"
-                        color="yellow.500"
-                      >
+                      <ListItem key={`cardsNotFound:${cardName}`}>
                         {cardName}
                       </ListItem>
                     ))}
-                  </UnorderedList>
-                </VStack>
-              )}
-            </VStack>
+                  </OrderedList>
 
+                  <AlertDescription>
+                    Would you like to submit the rest of the cards?
+                  </AlertDescription>
+                </Flex>
+              </Alert>
+            )}
+          </VStack>
+        </ModalBody>
+
+        <ModalFooter>
+          {cards.notFound.length > 0 ? (
+            <HStack>
+              <Button size="sm" colorScheme="whiteAlpha" onClick={resetCards}>
+                Cancel
+              </Button>
+
+              <Button
+                colorScheme="blue"
+                size="sm"
+                onClick={handleAddCardsToDeck}
+              >
+                Submit Anyways
+              </Button>
+            </HStack>
+          ) : (
             <Button
               colorScheme="blue"
               onClick={handleSubmitList}
               isLoading={isCardListLoading}
+              isDisabled={cards.notFound.length > 0 || isParseListError}
             >
               Submit
             </Button>
-          </Flex>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>
