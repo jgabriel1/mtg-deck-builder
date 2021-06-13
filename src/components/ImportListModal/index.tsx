@@ -1,17 +1,11 @@
-import React, {
+import {
   ChangeEventHandler,
   FunctionComponent,
   useEffect,
   useState,
 } from 'react';
 import {
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
   Button,
-  Flex,
-  ListItem,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -23,8 +17,10 @@ import {
   Textarea,
   VStack,
   HStack,
-  OrderedList,
 } from '@chakra-ui/react';
+
+import { CardsNotFoundAlert, ParseListErrorAlert } from './components';
+
 import { parseCardList, ParseListError } from './parseCardList';
 
 import { useDeck } from '../../hooks/deck';
@@ -40,11 +36,9 @@ type FetchedCardsState = {
   notFound: string[];
 };
 
-interface ImportListModalProps extends Omit<ModalProps, 'children'> {}
+type ImportListModalProps = Omit<ModalProps, 'children'>;
 
-export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
-  ...modalProps
-}) => {
+export const ImportListModal = ({ ...modalProps }: ImportListModalProps) => {
   const { addAllCardsToDeck } = useDeck();
 
   const { mutateCardsList, isCardsListLoading } = useCardsFromList();
@@ -147,47 +141,10 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
           />
 
           <VStack w="100%">
-            {isParseListError && (
-              <Alert status="error" borderRadius="lg" bg="none">
-                <AlertIcon />
-
-                <AlertTitle fontSize="sm" fontWeight="semibold" color="red.400">
-                  Please input a list in the supported format!
-                </AlertTitle>
-              </Alert>
-            )}
+            {isParseListError && <ParseListErrorAlert />}
 
             {cards.notFound.length > 0 && (
-              <Alert
-                status="warning"
-                borderRadius="lg"
-                bg="none"
-                pb="0"
-                fontSize="sm"
-                color="yellow.500"
-              >
-                <Flex flexDir="column" justify="flex-start" w="100%">
-                  <Flex flexDir="row" align="center" mb="2">
-                    <AlertIcon />
-
-                    <AlertTitle fontWeight="semibold">
-                      Some cards were not found:
-                    </AlertTitle>
-                  </Flex>
-
-                  <OrderedList w="inherit" pl="8" mb="2">
-                    {cards.notFound.map(cardName => (
-                      <ListItem key={`cardsNotFound:${cardName}`}>
-                        {cardName}
-                      </ListItem>
-                    ))}
-                  </OrderedList>
-
-                  <AlertDescription>
-                    Would you like to submit the rest of the cards?
-                  </AlertDescription>
-                </Flex>
-              </Alert>
+              <CardsNotFoundAlert cardsNotFound={cards.notFound} />
             )}
           </VStack>
         </ModalBody>
