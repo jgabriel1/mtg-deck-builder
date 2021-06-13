@@ -45,7 +45,7 @@ interface ImportListModalProps extends Omit<ModalProps, 'children'> {}
 export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
   ...modalProps
 }) => {
-  const { setAllCards: addAllCardsToDeck } = useDeck();
+  const { addAllCardsToDeck } = useDeck();
 
   const { mutateCardList, isCardListLoading } = useCardList();
 
