@@ -2,19 +2,19 @@ import { useMutation } from 'react-query';
 import { getCardsFromList } from '../services/cardData';
 import { CARD_LIST_DATA } from './keys';
 
-export const useCardList = () => {
+export const useCardsFromList = () => {
   const {
-    mutate: mutateCardList,
-    data: cardList,
-    isLoading: isCardListLoading,
+    mutate: mutateCardsList,
+    data: cardsList,
+    isLoading: isCardsListLoading,
   } = useMutation({
     mutationKey: CARD_LIST_DATA,
     mutationFn: getCardsFromList,
   });
 
   return {
-    mutateCardList,
-    cardList,
-    isCardListLoading,
+    mutateCardsList,
+    cardsList,
+    isCardsListLoading,
   };
 };
