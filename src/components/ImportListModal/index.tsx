@@ -28,7 +28,7 @@ import {
 import { parseCardList, ParseListError } from './parseCardList';
 
 import { useDeck } from '../../hooks/deck';
-import { useCardList } from '../../data/useCardList';
+import { useCardsFromList } from '../../data';
 
 import { CardData } from '../../services/cardData';
 
@@ -47,7 +47,7 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
 }) => {
   const { addAllCardsToDeck } = useDeck();
 
-  const { mutateCardList, isCardListLoading } = useCardList();
+  const { mutateCardsList, isCardsListLoading } = useCardsFromList();
 
   const [listString, setListString] = useState('');
 
@@ -72,7 +72,7 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
     try {
       const parsedCardsData = parseCardList(listString);
 
-      mutateCardList(
+      mutateCardsList(
         parsedCardsData.map(card => card.cardName),
         {
           onSuccess: ({ cards, notFound }) => {
@@ -211,7 +211,7 @@ export const ImportListModal: FunctionComponent<ImportListModalProps> = ({
             <Button
               colorScheme="blue"
               onClick={handleSubmitList}
-              isLoading={isCardListLoading}
+              isLoading={isCardsListLoading}
               isDisabled={cards.notFound.length > 0 || isParseListError}
             >
               Submit
