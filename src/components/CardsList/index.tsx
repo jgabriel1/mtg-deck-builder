@@ -46,7 +46,11 @@ export const CardsList: FunctionComponent<CardsListProps> = ({ cards }) => {
   return (
     <List spacing={1} w="100%">
       {blocks.map(block => (
-        <CardBlock title={block.title} cards={block.cards} />
+        <CardBlock
+          key={`cardListBlock:${block.title}`}
+          title={block.title}
+          cards={block.cards}
+        />
       ))}
     </List>
   );

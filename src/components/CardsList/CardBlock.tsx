@@ -43,9 +43,8 @@ export const CardBlock: FunctionComponent<CardBlockProps> = ({
 
       <List>
         {cards.map(card => (
-          <ListItem>
+          <ListItem key={`cardItem:${card.data.id}`}>
             <CardItem
-              key={`cardsList:${card.data.id}`}
               quantity={card.quantity}
               name={card.data.name}
               mana_cost={card.data.mana_cost}
