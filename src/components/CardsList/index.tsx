@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import {
   Box,
-  Divider,
+  Button,
   List,
   Menu,
   MenuButton,
@@ -25,15 +25,14 @@ export const CardsList = ({ cards }: CardsListProps) => {
 
   return (
     <>
-      <Box w="100%">
+      <Box w="100%" pb="4">
         <Menu>
           <MenuButton
-            px={4}
-            py={2}
-            borderRadius="md"
+            as={Button}
             bg="gray.700"
-            _focus={{ boxShadow: 'outline' }}
             fontSize="sm"
+            _hover={{ bg: 'gray.600' }}
+            _active={{ bg: 'gray.600' }}
           >
             Group By
           </MenuButton>
@@ -43,15 +42,14 @@ export const CardsList = ({ cards }: CardsListProps) => {
               <MenuItem
                 key={`groupByMenu:${key}`}
                 onClick={() => setGroupCardsBy(key)}
-                _hover={{ bg: 'gray.700' }}
+                _hover={{ bg: 'gray.600' }}
+                _active={{ bg: 'gray.600' }}
               >
                 {separatorFunctions[key].title}
               </MenuItem>
             ))}
           </MenuList>
         </Menu>
-
-        <Divider mt="4" mb="8" borderColor="gray.400" />
       </Box>
 
       <List spacing={1} w="100%">

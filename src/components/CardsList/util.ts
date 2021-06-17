@@ -68,7 +68,7 @@ export const separateByCMC: CardSeparatorFunction = cards => {
     .map(([cmc, cards]) => ({ title: cmc, cards }))
     .sort((a, b) => a.title - b.title)
     .map(block => ({
-      title: String(block.title),
+      title: `Mana Value ${block.title}`,
       cards: block.cards.sort((a, b) =>
         a.data.cmc === b.data.cmc
           ? a.data.name.localeCompare(b.data.name)
