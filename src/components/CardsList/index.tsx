@@ -1,16 +1,9 @@
-import React, { useMemo, useState } from 'react';
-import {
-  Box,
-  Button,
-  List,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from '@chakra-ui/react';
+import { useMemo, useState } from 'react';
+import { List } from '@chakra-ui/react';
 import { CardBlock } from './CardBlock';
 import { separatorFunctions } from './util';
 import { CardBlockData, CardItemData } from './types';
+import { OptionsBar } from './OptionsBar';
 
 type CardsListProps = {
   cards: CardItemData[];
@@ -25,32 +18,7 @@ export const CardsList = ({ cards }: CardsListProps) => {
 
   return (
     <>
-      <Box w="100%" pb="4">
-        <Menu>
-          <MenuButton
-            as={Button}
-            bg="gray.800"
-            fontSize="sm"
-            _hover={{ bg: 'gray.700' }}
-            _active={{ bg: 'gray.700' }}
-          >
-            Group By
-          </MenuButton>
-
-          <MenuList bg="gray.800">
-            {Object.keys(separatorFunctions).map(key => (
-              <MenuItem
-                key={`groupByMenu:${key}`}
-                onClick={() => setGroupCardsBy(key)}
-                _hover={{ bg: 'gray.700' }}
-                _active={{ bg: 'gray.700' }}
-              >
-                {separatorFunctions[key].title}
-              </MenuItem>
-            ))}
-          </MenuList>
-        </Menu>
-      </Box>
+      <OptionsBar setGroupCardsBy={setGroupCardsBy} />
 
       <List spacing={1} w="100%">
         {blocks.map(block => (
