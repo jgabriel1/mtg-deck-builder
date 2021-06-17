@@ -1,5 +1,4 @@
 import { CardData } from '../../services/cardData';
-import { CardBlock } from './CardBlock';
 
 export enum CardType {
   LAND = 'Land',
@@ -19,7 +18,7 @@ export type CardItemData = {
 };
 
 export type CardBlockData = {
-  title: CardType;
+  title: CardType | string;
   cards: CardItemData[];
 };
 

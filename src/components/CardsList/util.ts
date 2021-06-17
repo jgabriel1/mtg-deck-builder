@@ -46,8 +46,28 @@ export const separateByCardType: CardSeparatorFunction = cards => {
     }));
 };
 
-export const separateByCMC: CardSeparatorFunction = () => {
-  // TODO
+export const separateByCMC: CardSeparatorFunction = cards => {
+  const cardBlocks = new Map<number, CardItemData[]>();
 
-  return [];
+  cards.forEach(card => {
+    const { cmc } = card.data;
+
+    if (cardBlocks.has(cmc)) {
+      cardBlocks.get(cmc)?.push(card);
+    } else {
+      cardBlocks.set(cmc, [card]);
+    }
+  });
+
+  return Array.from(cardBlocks)
+    .map(([cmc, cards]) => ({ title: cmc, cards }))
+    .sort((a, b) => a.title - b.title)
+    .map(block => ({
+      title: String(block.title),
+      cards: block.cards.sort((a, b) =>
+        a.data.cmc === b.data.cmc
+          ? a.data.name.localeCompare(b.data.name)
+          : a.data.cmc - b.data.cmc
+      ),
+    }));
 };
