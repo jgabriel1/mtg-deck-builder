@@ -1,4 +1,9 @@
-import { CardItemData, CardSeparatorFunction, CardType } from './types';
+import {
+  CardItemData,
+  CardSeparatorFunction,
+  CardType,
+  SeparatorFunctions,
+} from './types';
 
 const typePriority = [
   CardType.CREATURE,
@@ -70,4 +75,16 @@ export const separateByCMC: CardSeparatorFunction = cards => {
           : a.data.cmc - b.data.cmc
       ),
     }));
+};
+
+export const separatorFunctions: SeparatorFunctions = {
+  CARD_TYPE: {
+    title: 'Card Type',
+    separatorCallback: separateByCardType,
+  },
+
+  MANA_VALUE: {
+    title: 'Mana Value',
+    separatorCallback: separateByCMC,
+  },
 };

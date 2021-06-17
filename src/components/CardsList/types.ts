@@ -26,3 +26,10 @@ export type CardSeparatorFunction<O = any> = (
   cards: CardItemData[],
   options?: O
 ) => CardBlockData[];
+
+export type SeparatorFunctions = {
+  [key: string]: {
+    title: string;
+    separatorCallback: CardSeparatorFunction;
+  };
+};
