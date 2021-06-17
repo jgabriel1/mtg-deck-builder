@@ -29,10 +29,10 @@ export const CardsList = ({ cards }: CardsListProps) => {
         <Menu>
           <MenuButton
             as={Button}
-            bg="gray.700"
+            bg="gray.800"
             fontSize="sm"
-            _hover={{ bg: 'gray.600' }}
-            _active={{ bg: 'gray.600' }}
+            _hover={{ bg: 'gray.700' }}
+            _active={{ bg: 'gray.700' }}
           >
             Group By
           </MenuButton>
@@ -42,8 +42,8 @@ export const CardsList = ({ cards }: CardsListProps) => {
               <MenuItem
                 key={`groupByMenu:${key}`}
                 onClick={() => setGroupCardsBy(key)}
-                _hover={{ bg: 'gray.600' }}
-                _active={{ bg: 'gray.600' }}
+                _hover={{ bg: 'gray.700' }}
+                _active={{ bg: 'gray.700' }}
               >
                 {separatorFunctions[key].title}
               </MenuItem>

@@ -30,9 +30,9 @@ export const CardBlock: FunctionComponent<CardBlockProps> = ({
   }, [cards]);
 
   return (
-    <Container>
-      <Flex justify="space-between" align="center">
-        <Heading size="md" fontWeight="semibold" mb="4">
+    <Container bg="gray.800" borderRadius="md" py="4" mb="4">
+      <Flex justify="space-between" align="center" mb="4">
+        <Heading size="sm" fontWeight="semibold">
           {title}
         </Heading>
 
@@ -54,7 +54,7 @@ export const CardBlock: FunctionComponent<CardBlockProps> = ({
         ))}
       </List>
 
-      <Divider mt="4" mb="8" borderColor="gray.400" />
+      {/* <Divider mt="4" mb="8" borderColor="gray.400" /> */}
     </Container>
   );
 };
