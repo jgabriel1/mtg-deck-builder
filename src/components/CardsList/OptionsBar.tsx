@@ -6,7 +6,7 @@ import {
   MenuItem,
   MenuList,
 } from '@chakra-ui/react';
-import { separatorFunctions } from './util';
+import { separators } from './util';
 
 type OptionsBarProps = {
   setGroupCardsBy: (key: string) => void;
@@ -27,14 +27,14 @@ export const OptionsBar = ({ setGroupCardsBy }: OptionsBarProps) => {
         </MenuButton>
 
         <MenuList bg="gray.800">
-          {Object.keys(separatorFunctions).map(key => (
+          {Object.entries(separators.data).map(([key, value]) => (
             <MenuItem
               key={`groupByMenu:${key}`}
               onClick={() => setGroupCardsBy(key)}
               _hover={{ bg: 'gray.700' }}
               _active={{ bg: 'gray.700' }}
             >
-              {separatorFunctions[key].title}
+              {value.title}
             </MenuItem>
           ))}
         </MenuList>

@@ -1,8 +1,8 @@
 import {
   CardItemData,
   CardSeparatorFunction,
+  CardSeparators,
   CardType,
-  SeparatorFunctions,
 } from './types';
 
 const typePriority = [
@@ -16,7 +16,7 @@ const typePriority = [
   CardType.LEGENDARY,
 ];
 
-export const parseCardType = (typeString: string): CardType => {
+const parseCardType = (typeString: string): CardType => {
   const types = typeString.replace('-', '').split(' ');
 
   for (let cardType of typePriority)
@@ -25,7 +25,7 @@ export const parseCardType = (typeString: string): CardType => {
   return CardType.DEFAULT;
 };
 
-export const separateByCardType: CardSeparatorFunction = cards => {
+const separateByCardType: CardSeparatorFunction = cards => {
   const cardBlocks = new Map<CardType, CardItemData[]>();
 
   cards.forEach(card => {
@@ -51,7 +51,7 @@ export const separateByCardType: CardSeparatorFunction = cards => {
     }));
 };
 
-export const separateByCMC: CardSeparatorFunction = cards => {
+const separateByCMC: CardSeparatorFunction = cards => {
   const cardBlocks = new Map<number, CardItemData[]>();
 
   cards.forEach(card => {
@@ -77,14 +77,24 @@ export const separateByCMC: CardSeparatorFunction = cards => {
     }));
 };
 
-export const separatorFunctions: SeparatorFunctions = {
-  CARD_TYPE: {
-    title: 'Card Type',
-    separatorCallback: separateByCardType,
+export const separators: CardSeparators = {
+  data: {
+    CARD_TYPE: {
+      title: 'Card Type',
+      separatorCallback: separateByCardType,
+    },
+
+    MANA_VALUE: {
+      title: 'Mana Value',
+      separatorCallback: separateByCMC,
+    },
   },
 
-  MANA_VALUE: {
-    title: 'Mana Value',
-    separatorCallback: separateByCMC,
+  separateBy(key: string, cards: CardItemData[]) {
+    if (!this.data.hasOwnProperty(key)) {
+      return separateByCardType(cards); // Default grouping function
+    }
+
+    return this.data[key].separatorCallback(cards);
   },
 };

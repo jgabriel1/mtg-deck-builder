@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { List } from '@chakra-ui/react';
 import { CardBlock } from './CardBlock';
-import { separatorFunctions } from './util';
+import { separators } from './util';
 import { CardBlockData, CardItemData } from './types';
 import { OptionsBar } from './OptionsBar';
 
@@ -13,7 +13,7 @@ export const CardsList = ({ cards }: CardsListProps) => {
   const [groupCardsBy, setGroupCardsBy] = useState('CARD_TYPE');
 
   const blocks = useMemo<CardBlockData[]>(() => {
-    return separatorFunctions[groupCardsBy].separatorCallback(cards);
+    return separators.separateBy(groupCardsBy, cards);
   }, [cards, groupCardsBy]);
 
   return (

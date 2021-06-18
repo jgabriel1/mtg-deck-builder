@@ -18,7 +18,7 @@ export type CardItemData = {
 };
 
 export type CardBlockData = {
-  title: CardType | string;
+  title: string;
   cards: CardItemData[];
 };
 
@@ -27,9 +27,13 @@ export type CardSeparatorFunction<O = any> = (
   options?: O
 ) => CardBlockData[];
 
-export type SeparatorFunctions = {
-  [key: string]: {
-    title: string;
-    separatorCallback: CardSeparatorFunction;
+export type CardSeparators = {
+  data: {
+    [key: string]: {
+      title: string;
+      separatorCallback: CardSeparatorFunction;
+    };
   };
+
+  separateBy(key: string, cards: CardItemData[]): CardBlockData[];
 };
