@@ -1,6 +1,12 @@
-import { extendTheme, Theme } from '@chakra-ui/react';
+import { extendTheme, ThemeConfig } from '@chakra-ui/react';
+
+const config: ThemeConfig = {
+  initialColorMode: 'dark',
+  useSystemColorMode: true,
+};
 
 export const theme = extendTheme({
+  config,
   colors: {
     gray: {
       '900': '#181b23',
@@ -18,13 +24,5 @@ export const theme = extendTheme({
   fonts: {
     heading: 'Open Sans',
     body: 'Open Sans',
-  },
-  styles: {
-    global: {
-      body: {
-        bg: 'gray.900',
-        color: 'gray.100',
-      },
-    },
   },
 });
