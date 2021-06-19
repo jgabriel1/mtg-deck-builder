@@ -15,9 +15,7 @@ export const Header = () => {
       <Flex h="20" align="center">
         <Container maxW="container.md">
           <Flex justify="space-between" align="center">
-            <Heading as="h2" color="white">
-              Deck Builder
-            </Heading>
+            <Heading as="h2">Deck Builder</Heading>
 
             <Button type="button" colorScheme="blue" size="md" onClick={onOpen}>
               Import
