@@ -120,7 +120,7 @@ export const ImportListModal = ({ ...modalProps }: ImportListModalProps) => {
     <Modal {...modalProps}>
       <ModalOverlay />
 
-      <ModalContent bg="gray.800">
+      <ModalContent>
         <ModalHeader>Import from list</ModalHeader>
         <ModalCloseButton />
 

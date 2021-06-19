@@ -104,11 +104,10 @@ export const SearchBox: FunctionComponent<SearchBoxProps> = ({
         </VStack>
 
         {possibleCards && possibleCards.length > 0 && (
-          <MenuList w="100%" mt="-4" bg="gray.800">
+          <MenuList w="100%" mt="-4">
             {possibleCards.map((card, index) => (
               <MenuItem
                 key={`possibleCards:${index}`}
-                _hover={{ color: 'gray.800' }}
                 onClick={() => handleSelectPossibleCard(card)}
               >
                 {card}

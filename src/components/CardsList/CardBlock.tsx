@@ -30,13 +30,13 @@ export const CardBlock: FunctionComponent<CardBlockProps> = ({
   }, [cards]);
 
   return (
-    <Container bg="gray.800" borderRadius="md" py="4" mb="4">
+    <Container bg="whiteAlpha.100" borderRadius="md" py="4" mb="4">
       <Flex justify="space-between" align="center" mb="4">
         <Heading size="sm" fontWeight="semibold">
           {title}
         </Heading>
 
-        <Text fontSize="sm" fontWeight="medium" color="gray.300">
+        <Text fontSize="sm" fontWeight="semibold" color="gray.400">
           {`(${totalCards})`}
         </Text>
       </Flex>
@@ -53,8 +53,6 @@ export const CardBlock: FunctionComponent<CardBlockProps> = ({
           </ListItem>
         ))}
       </List>
-
-      {/* <Divider mt="4" mb="8" borderColor="gray.400" /> */}
     </Container>
   );
 };
