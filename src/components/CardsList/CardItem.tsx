@@ -1,5 +1,4 @@
 import { Button, Grid, GridItem, Text } from '@chakra-ui/react';
-
 import { CardImagePopover } from './CardImagePopover';
 import { ManaSymbol } from '../ManaSymbol';
 
@@ -18,14 +17,7 @@ export const CardItem = ({
 }: CardItemProps) => {
   return (
     <CardImagePopover imageUrl={imageUrl}>
-      <Button
-        w="100%"
-        variant="ghost"
-        fontWeight="normal"
-        fontSize="lg"
-        colorScheme="whiteAlpha"
-        color="gray.100"
-      >
+      <Button w="100%" variant="ghost" fontWeight="normal" fontSize="lg">
         <Grid templateColumns="repeat(16, 1fr)" gap="2" w="100%">
           <GridItem colSpan={1}>
             <Text textAlign="start">{quantity}</Text>
