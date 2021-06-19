@@ -1,12 +1,12 @@
 import { FunctionComponent, useMemo } from 'react';
 import {
   Container,
-  Divider,
   Flex,
   Heading,
   List,
   ListItem,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { CardItem } from './CardItem';
 import { CardData } from '../../services/cardData';
@@ -25,12 +25,17 @@ export const CardBlock: FunctionComponent<CardBlockProps> = ({
   title,
   cards,
 }) => {
+  const containerBackgroundColor = useColorModeValue(
+    'gray.50',
+    'whiteAlpha.100'
+  );
+
   const totalCards = useMemo(() => {
     return cards.reduce((accum, card) => accum + card.quantity, 0);
   }, [cards]);
 
   return (
-    <Container bg="whiteAlpha.100" borderRadius="md" py="4" mb="4">
+    <Container bg={containerBackgroundColor} borderRadius="md" py="4" mb="4">
       <Flex justify="space-between" align="center" mb="4">
         <Heading size="sm" fontWeight="semibold">
           {title}
