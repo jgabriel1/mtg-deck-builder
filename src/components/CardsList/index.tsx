@@ -1,25 +1,23 @@
-import { useMemo, useState } from 'react';
-import { List } from '@chakra-ui/react';
+import React, { useMemo } from 'react';
+import { Container, List } from '@chakra-ui/react';
 import { CardBlock } from './CardBlock';
 import { separators } from './util';
-import { CardBlockData, CardItemData } from './types';
-import { OptionsBar } from './OptionsBar';
+import { CardBlockData, CardItemData } from '../../types';
+import { useListOptions } from '../../hooks/listOptions';
 
 type CardsListProps = {
   cards: CardItemData[];
 };
 
 export const CardsList = ({ cards }: CardsListProps) => {
-  const [groupCardsBy, setGroupCardsBy] = useState('CARD_TYPE');
+  const { options } = useListOptions();
 
   const blocks = useMemo<CardBlockData[]>(() => {
-    return separators.separateBy(groupCardsBy, cards);
-  }, [cards, groupCardsBy]);
+    return separators.separateBy(options.groupMode, cards);
+  }, [cards, options.groupMode]);
 
   return (
-    <>
-      <OptionsBar setGroupCardsBy={setGroupCardsBy} />
-
+    <Container maxW="100%">
       <List spacing={1} w="100%">
         {blocks.map(block => (
           <CardBlock
@@ -29,6 +27,6 @@ export const CardsList = ({ cards }: CardsListProps) => {
           />
         ))}
       </List>
-    </>
+    </Container>
   );
 };
