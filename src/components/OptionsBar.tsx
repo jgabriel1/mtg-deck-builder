@@ -13,7 +13,7 @@ export const OptionsBar = () => {
   const { toggleDisplayMode, toggleGroupMode } = useListOptions();
 
   return (
-    <HStack w="100%" pb="4" spacing="4">
+    <HStack spacing="4">
       <Menu>
         <MenuButton as={Button} fontSize="sm">
           Group By
