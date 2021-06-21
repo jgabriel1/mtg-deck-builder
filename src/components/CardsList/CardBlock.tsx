@@ -1,4 +1,4 @@
-import { FunctionComponent, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
   Container,
   Flex,
@@ -21,10 +21,7 @@ type CardBlockProps = {
   cards: CardItemData[];
 };
 
-export const CardBlock: FunctionComponent<CardBlockProps> = ({
-  title,
-  cards,
-}) => {
+export const CardBlock = ({ title, cards }: CardBlockProps) => {
   const containerBackgroundColor = useColorModeValue(
     'gray.50',
     'whiteAlpha.100'
@@ -35,7 +32,13 @@ export const CardBlock: FunctionComponent<CardBlockProps> = ({
   }, [cards]);
 
   return (
-    <Container bg={containerBackgroundColor} borderRadius="md" py="4" mb="4">
+    <Container
+      bg={containerBackgroundColor}
+      borderRadius="md"
+      py="4"
+      mb="4"
+      maxW="100%"
+    >
       <Flex justify="space-between" align="center" mb="4">
         <Heading size="sm" fontWeight="semibold">
           {title}
