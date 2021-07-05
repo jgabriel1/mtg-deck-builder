@@ -12,8 +12,8 @@ export const Header = () => {
 
   return (
     <>
-      <Flex h="20" align="center">
-        <Container maxW="container.md">
+      <Flex h="24" align="center">
+        <Container maxW="container.lg">
           <Flex justify="space-between" align="center">
             <Heading as="h2">Deck Builder</Heading>
 
