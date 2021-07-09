@@ -6,7 +6,7 @@ import {
   List,
   ListItem,
   Text,
-  useColorModeValue,
+  Divider,
 } from '@chakra-ui/react';
 import { CardItem } from './CardItem';
 import { CardData } from '../../services/cardData';
@@ -22,23 +22,12 @@ type CardBlockProps = {
 };
 
 export const CardBlock = ({ title, cards }: CardBlockProps) => {
-  const containerBackgroundColor = useColorModeValue(
-    'gray.50',
-    'whiteAlpha.100'
-  );
-
   const totalCards = useMemo(() => {
     return cards.reduce((accum, card) => accum + card.quantity, 0);
   }, [cards]);
 
   return (
-    <Container
-      bg={containerBackgroundColor}
-      borderRadius="md"
-      py="4"
-      mb="4"
-      maxW="100%"
-    >
+    <Container borderRadius="md" maxW="100%">
       <Flex justify="space-between" align="center" mb="4">
         <Heading size="sm" fontWeight="semibold">
           {title}
@@ -61,6 +50,8 @@ export const CardBlock = ({ title, cards }: CardBlockProps) => {
           </ListItem>
         ))}
       </List>
+
+      <Divider my="4" />
     </Container>
   );
 };
