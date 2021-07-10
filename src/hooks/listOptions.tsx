@@ -1,8 +1,8 @@
 import { createContext, FC, Reducer, useContext, useReducer } from 'react';
 
-type DisplayMode = 'LIST' | 'VISUAL';
+export type DisplayMode = 'LIST' | 'VISUAL';
 
-type GroupMode = 'CARD_TYPE' | 'MANA_VALUE';
+export type GroupMode = 'CARD_TYPE' | 'MANA_VALUE';
 
 type Options = {
   displayMode: DisplayMode;

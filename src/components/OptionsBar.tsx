@@ -4,43 +4,67 @@ import {
   Menu,
   MenuButton,
   MenuItem,
+  MenuItemOption,
   MenuList,
+  MenuOptionGroup,
+  useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
-import { useListOptions } from '../hooks/listOptions';
+import { DisplayMode, GroupMode, useListOptions } from '../hooks/listOptions';
 
 export const OptionsBar = () => {
-  const { toggleDisplayMode, toggleGroupMode } = useListOptions();
+  const { options, toggleDisplayMode, toggleGroupMode } = useListOptions();
+
+  const groupModeMenu = useDisclosure();
+  const displayModeMenu = useDisclosure();
+
+  const handleChangeGroupMode = (value: string | string[]) => {
+    groupModeMenu.onClose();
+
+    toggleGroupMode(value as GroupMode);
+  };
+
+  const handleChangeDisplayMode = (value: string | string[]) => {
+    displayModeMenu.onClose();
+
+    toggleDisplayMode(value as DisplayMode);
+  };
 
   return (
     <HStack spacing="4">
-      <Menu>
+      <Menu {...groupModeMenu}>
         <MenuButton as={Button} fontSize="sm">
           Group By
         </MenuButton>
 
         <MenuList>
-          <MenuItem onClick={() => toggleGroupMode('CARD_TYPE')}>
-            Card Type
-          </MenuItem>
+          <MenuOptionGroup
+            type="radio"
+            value={options.groupMode}
+            onChange={handleChangeGroupMode}
+          >
+            <MenuItemOption value="CARD_TYPE">Card Type</MenuItemOption>
 
-          <MenuItem onClick={() => toggleGroupMode('MANA_VALUE')}>
-            Mana Value
-          </MenuItem>
+            <MenuItemOption value="MANA_VALUE">Mana Value</MenuItemOption>
+          </MenuOptionGroup>
         </MenuList>
       </Menu>
 
-      <Menu>
+      <Menu {...displayModeMenu}>
         <MenuButton as={Button} fontSize="sm">
           Display Mode
         </MenuButton>
 
         <MenuList>
-          <MenuItem onClick={() => toggleDisplayMode('LIST')}>List</MenuItem>
+          <MenuOptionGroup
+            type="radio"
+            value={options.displayMode}
+            onChange={handleChangeDisplayMode}
+          >
+            <MenuItemOption value={'LIST'}>List</MenuItemOption>
 
-          <MenuItem onClick={() => toggleDisplayMode('VISUAL')}>
-            Visual
-          </MenuItem>
+            <MenuItemOption value={'VISUAL'}>Visual</MenuItemOption>
+          </MenuOptionGroup>
         </MenuList>
       </Menu>
     </HStack>
