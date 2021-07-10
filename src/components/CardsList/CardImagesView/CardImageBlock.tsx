@@ -1,13 +1,6 @@
-import {
-  Container,
-  Divider,
-  Flex,
-  Heading,
-  SimpleGrid,
-  Text,
-} from '@chakra-ui/react';
-import React, { useMemo } from 'react';
-import { CardData } from '../../services/cardData';
+import { Container, Divider, Flex, Heading, Text } from '@chakra-ui/react';
+import { useMemo } from 'react';
+import { CardData } from '../../../services/cardData';
 import { CardImageItem } from './CardImageItem';
 
 type CardItemData = {

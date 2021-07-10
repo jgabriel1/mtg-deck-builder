@@ -9,7 +9,7 @@ import {
   Divider,
 } from '@chakra-ui/react';
 import { CardItem } from './CardItem';
-import { CardData } from '../../services/cardData';
+import { CardData } from '../../../services/cardData';
 
 type CardItemData = {
   quantity: number;

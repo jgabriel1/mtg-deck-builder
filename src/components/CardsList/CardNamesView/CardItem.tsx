@@ -1,6 +1,6 @@
 import { Button, Grid, GridItem, Text } from '@chakra-ui/react';
-import { CardImagePopover } from './CardImagePopover';
-import { ManaSymbol } from '../ManaSymbol';
+import { CardImagePopover } from '../CardImagePopover';
+import { ManaSymbol } from '../../ManaSymbol';
 
 type CardItemProps = {
   quantity?: number;

@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { separators } from './util';
 import { CardBlockData, CardItemData } from '../../types';
 import { useListOptions } from '../../hooks/listOptions';
-import { CardNamesList } from './CardNamesList';
-import { CardImagesList } from './CardImagesList';
+import { CardNamesList } from './CardNamesView';
+import { CardImagesList } from './CardImagesView';
 
 type CardsListProps = {
   cards: CardItemData[];

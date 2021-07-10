@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { CardBlockData } from '../../types';
+import { CardBlockData } from '../../../types';
 import { CardBlock } from './CardBlock';
 
 type CardNamesListProps = {

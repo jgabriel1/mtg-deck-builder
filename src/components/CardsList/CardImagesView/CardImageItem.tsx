@@ -1,5 +1,5 @@
 import { Box, Image, Text } from '@chakra-ui/react';
-import { CardImagePopover } from './CardImagePopover';
+import { CardImagePopover } from '../CardImagePopover';
 
 type CardImageItemProps = {
   imageUrl: string;

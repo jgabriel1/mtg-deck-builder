@@ -1,5 +1,5 @@
 import { VStack } from '@chakra-ui/react';
-import { CardBlockData } from '../../types';
+import { CardBlockData } from '../../../types';
 import { CardImageBlock } from './CardImageBlock';
 
 type CardImagesListProps = {
