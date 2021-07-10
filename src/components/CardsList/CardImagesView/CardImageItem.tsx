@@ -1,4 +1,4 @@
-import { Box, Image, Text } from '@chakra-ui/react';
+import { Box, Img, Text } from '@chakra-ui/react';
 import { CardImagePopover } from '../CardImagePopover';
 
 type CardImageItemProps = {
@@ -23,12 +23,7 @@ export const CardImageItem = ({ imageUrl, quantity }: CardImageItemProps) => {
           </Box>
         )}
 
-        <Image
-          src={imageUrl}
-          maxW="128"
-          objectFit="contain"
-          borderRadius="lg"
-        />
+        <Img src={imageUrl} maxW="128" objectFit="contain" borderRadius="lg" />
       </Box>
     </CardImagePopover>
   );
