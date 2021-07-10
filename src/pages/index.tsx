@@ -1,15 +1,13 @@
-import { FunctionComponent } from 'react';
-import { Container, Flex, VStack } from '@chakra-ui/layout';
-
+import { Box, Container, Flex, HStack, VStack } from '@chakra-ui/react';
 import { useDeck } from '../hooks/deck';
-
 import { CardsList } from '../components/CardsList';
 import { Header } from '../components/Header';
 import { SearchBox } from '../components/SearchBox';
-
 import { CardData } from '../services/cardData';
+import { OptionsBar } from '../components/OptionsBar';
+import React from 'react';
 
-const Home: FunctionComponent = () => {
+const Home = () => {
   const { deck, addCard } = useDeck();
 
   const onSubmitCard = (card: CardData) => {
@@ -20,9 +18,15 @@ const Home: FunctionComponent = () => {
     <Flex flexDir="column" h="100vh">
       <Header />
 
-      <Container maxW="container.sm">
+      <Container maxW="container.lg">
         <VStack align="flex-start">
-          <SearchBox onSubmitCard={onSubmitCard} />
+          <Flex w="100%" justify="space-between" align="center">
+            <Box w="50%">
+              <SearchBox onSubmitCard={onSubmitCard} />
+            </Box>
+
+            <OptionsBar />
+          </Flex>
 
           <CardsList cards={deck} />
         </VStack>

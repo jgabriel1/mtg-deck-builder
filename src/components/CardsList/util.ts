@@ -3,7 +3,7 @@ import {
   CardSeparatorFunction,
   CardSeparators,
   CardType,
-} from './types';
+} from '../../types';
 
 const typePriority = [
   CardType.CREATURE,

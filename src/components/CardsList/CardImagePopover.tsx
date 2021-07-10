@@ -1,4 +1,3 @@
-import { FunctionComponent } from 'react';
 import {
   Box,
   Image,
@@ -13,15 +12,15 @@ interface CardImagePopoverProps extends PopoverProps {
   imageUrl: string;
 }
 
-export const CardImagePopover: FunctionComponent<CardImagePopoverProps> = ({
+export const CardImagePopover = ({
   children,
   imageUrl,
   ...rest
-}) => {
+}: CardImagePopoverProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
-    <Popover {...rest} placement="right" isOpen={isOpen}>
+    <Popover placement="right" {...rest} isOpen={isOpen}>
       <PopoverTrigger>
         <Box onMouseEnter={onOpen} onMouseLeave={onClose}>
           {children}

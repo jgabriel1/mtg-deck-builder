@@ -1,34 +1,28 @@
-import { useMemo, useState } from 'react';
-import { List } from '@chakra-ui/react';
-import { CardBlock } from './CardBlock';
+import { useMemo } from 'react';
 import { separators } from './util';
-import { CardBlockData, CardItemData } from './types';
-import { OptionsBar } from './OptionsBar';
+import { CardBlockData, CardItemData } from '../../types';
+import { useListOptions } from '../../hooks/listOptions';
+import { CardNamesList } from './CardNamesView';
+import { CardImagesList } from './CardImagesView';
 
 type CardsListProps = {
   cards: CardItemData[];
 };
 
 export const CardsList = ({ cards }: CardsListProps) => {
-  const [groupCardsBy, setGroupCardsBy] = useState('CARD_TYPE');
+  const { options } = useListOptions();
 
   const blocks = useMemo<CardBlockData[]>(() => {
-    return separators.separateBy(groupCardsBy, cards);
-  }, [cards, groupCardsBy]);
+    return separators.separateBy(options.groupMode, cards);
+  }, [cards, options.groupMode]);
 
   return (
     <>
-      <OptionsBar setGroupCardsBy={setGroupCardsBy} />
-
-      <List spacing={1} w="100%">
-        {blocks.map(block => (
-          <CardBlock
-            key={`cardListBlock:${block.title}`}
-            title={block.title}
-            cards={block.cards}
-          />
-        ))}
-      </List>
+      {options.displayMode === 'VISUAL' ? (
+        <CardImagesList blocks={blocks} />
+      ) : (
+        <CardNamesList blocks={blocks} />
+      )}
     </>
   );
 };

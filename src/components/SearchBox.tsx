@@ -1,9 +1,4 @@
-import {
-  FormEventHandler,
-  FunctionComponent,
-  ChangeEventHandler,
-  useRef,
-} from 'react';
+import { FormEventHandler, ChangeEventHandler, useRef } from 'react';
 import {
   HStack,
   Button,
@@ -26,9 +21,7 @@ type SearchBoxProps = {
 
 type ChangeInputEventHandler = ChangeEventHandler<HTMLInputElement>;
 
-export const SearchBox: FunctionComponent<SearchBoxProps> = ({
-  onSubmitCard,
-}) => {
+export const SearchBox = ({ onSubmitCard }: SearchBoxProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const {

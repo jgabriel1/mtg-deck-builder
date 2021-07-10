@@ -1,4 +1,4 @@
-import { FunctionComponent, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
   Container,
   Flex,
@@ -6,10 +6,10 @@ import {
   List,
   ListItem,
   Text,
-  useColorModeValue,
+  Divider,
 } from '@chakra-ui/react';
 import { CardItem } from './CardItem';
-import { CardData } from '../../services/cardData';
+import { CardData } from '../../../services/cardData';
 
 type CardItemData = {
   quantity: number;
@@ -21,21 +21,13 @@ type CardBlockProps = {
   cards: CardItemData[];
 };
 
-export const CardBlock: FunctionComponent<CardBlockProps> = ({
-  title,
-  cards,
-}) => {
-  const containerBackgroundColor = useColorModeValue(
-    'gray.50',
-    'whiteAlpha.100'
-  );
-
+export const CardBlock = ({ title, cards }: CardBlockProps) => {
   const totalCards = useMemo(() => {
     return cards.reduce((accum, card) => accum + card.quantity, 0);
   }, [cards]);
 
   return (
-    <Container bg={containerBackgroundColor} borderRadius="md" py="4" mb="4">
+    <Container borderRadius="md" maxW="100%">
       <Flex justify="space-between" align="center" mb="4">
         <Heading size="sm" fontWeight="semibold">
           {title}
@@ -58,6 +50,8 @@ export const CardBlock: FunctionComponent<CardBlockProps> = ({
           </ListItem>
         ))}
       </List>
+
+      <Divider my="4" />
     </Container>
   );
 };

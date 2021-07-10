@@ -1,7 +1,11 @@
-import { FunctionComponent } from 'react';
-
+import { FC } from 'react';
 import { DeckProvider } from './deck';
+import { ListOptionsProvider } from './listOptions';
 
-export const AppProvider: FunctionComponent = ({ children }) => {
-  return <DeckProvider>{children}</DeckProvider>;
+export const AppProvider: FC = ({ children }) => {
+  return (
+    <DeckProvider>
+      <ListOptionsProvider>{children}</ListOptionsProvider>
+    </DeckProvider>
+  );
 };

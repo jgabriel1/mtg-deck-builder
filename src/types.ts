@@ -1,4 +1,4 @@
-import { CardData } from '../../services/cardData';
+import { CardData } from './services/cardData';
 
 export enum CardType {
   LAND = 'Land',
