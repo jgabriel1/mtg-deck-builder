@@ -53,18 +53,26 @@ const separateByCardType: CardSeparatorFunction = cards => {
 
 const separateByCMC: CardSeparatorFunction = cards => {
   const cardBlocks = new Map<number, CardItemData[]>();
+  const lands = new Array<CardItemData>();
 
   cards.forEach(card => {
     const { cmc } = card.data;
 
-    if (cardBlocks.has(cmc)) {
-      cardBlocks.get(cmc)?.push(card);
+    if (
+      cmc === 0 &&
+      parseCardType(card.data.type_line).includes(CardType.LAND)
+    ) {
+      lands.push(card);
     } else {
-      cardBlocks.set(cmc, [card]);
+      if (cardBlocks.has(cmc)) {
+        cardBlocks.get(cmc)?.push(card);
+      } else {
+        cardBlocks.set(cmc, [card]);
+      }
     }
   });
 
-  return Array.from(cardBlocks)
+  const cmcBlocks = Array.from(cardBlocks)
     .map(([cmc, cards]) => ({ title: cmc, cards }))
     .sort((a, b) => a.title - b.title)
     .map(block => ({
@@ -75,6 +83,8 @@ const separateByCMC: CardSeparatorFunction = cards => {
           : a.data.cmc - b.data.cmc
       ),
     }));
+
+  return [...cmcBlocks, { title: 'Lands', cards: lands }];
 };
 
 export const separators: CardSeparators = {
