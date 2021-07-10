@@ -1,6 +1,7 @@
 import { Container, Divider, Flex, Heading, Text } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { CardData } from '../../../services/cardData';
+import { CardBlockTitle } from '../CardBlockTitle';
 import { CardImageItem } from './CardImageItem';
 
 type CardItemData = {
@@ -22,7 +23,7 @@ export const CardImageBlock = ({ title, cards }: CardImageBlockProps) => {
     <Container maxW="container.lg">
       <Flex justify="space-between" align="center" mb="28">
         <Heading size="sm" fontWeight="semibold">
-          {title}
+          <CardBlockTitle title={title} />
         </Heading>
 
         <Text fontSize="sm" fontWeight="semibold" color="gray.400">

@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { CardItem } from './CardItem';
 import { CardData } from '../../../services/cardData';
+import { CardBlockTitle } from '../CardBlockTitle';
 
 type CardItemData = {
   quantity: number;
@@ -30,7 +31,7 @@ export const CardBlock = ({ title, cards }: CardBlockProps) => {
     <Container borderRadius="md" maxW="100%">
       <Flex justify="space-between" align="center" mb="4">
         <Heading size="sm" fontWeight="semibold">
-          {title}
+          <CardBlockTitle title={title} />
         </Heading>
 
         <Text fontSize="sm" fontWeight="semibold" color="gray.400">
