@@ -8,13 +8,13 @@ type CardNamesListProps = {
 
 export const CardNamesList = ({ blocks }: CardNamesListProps) => {
   return (
-    <Box mx="auto" sx={{ columnCount: 3, columnGap: '8px' }} pb="8">
+    <Box mx="auto" sx={{ columnCount: 2, columnGap: '8px' }} pb="8">
       {blocks.map(block => (
         <Box
           key={`cardListBlock:${block.title}`}
           w="100%"
           mb={2}
-          display="inline"
+          display="inline-block"
           borderRadius="lg"
         >
           <CardBlock title={block.title} cards={block.cards} />
