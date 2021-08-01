@@ -1,6 +1,6 @@
 import axios from 'axios';
-import cheerio from 'cheerio';
 import { NextApiHandler } from 'next';
+import { parseHTML } from 'linkedom';
 
 const ligaClient = axios.create({
   baseURL: 'https://www.ligamagic.com.br',
@@ -15,11 +15,12 @@ const liga: NextApiHandler = async (req, res) => {
     `/?view=cards/card&card=${urlSafeCardName}`
   );
 
-  const $ = cheerio.load(data);
+  const { document } = parseHTML(data);
 
-  const priceString = $('div.col-prc.col-prc-menor').html();
+  const priceString = document.querySelector(
+    'div.col-prc.col-prc-menor'
+  )?.textContent;
 
-  // Transform into number
   const priceValue = priceString
     ? Number(priceString.replace('R$ ', '').replace(',', '.'))
     : 0;
