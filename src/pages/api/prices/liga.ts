@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { NextApiHandler } from 'next';
 import { parseHTML } from 'linkedom';
+import currency from 'currency.js';
 
 const ligaClient = axios.create({
   baseURL: 'https://www.ligamagic.com.br',
@@ -21,14 +22,18 @@ const liga: NextApiHandler = async (req, res) => {
     'div.col-prc.col-prc-menor'
   )?.textContent;
 
-  const priceValue = priceString
-    ? Number(priceString.replace('R$ ', '').replace(',', '.'))
-    : 0;
+  const price = currency(priceString || 0, {
+    symbol: 'R$',
+    decimal: ',',
+    separator: '.',
+    pattern: '! #',
+    errorOnInvalid: false,
+  });
 
   return res.json({
     name: cardName,
-    text: priceString,
-    value: priceValue,
+    text: price.format(),
+    value: price.value,
   });
 };
 
