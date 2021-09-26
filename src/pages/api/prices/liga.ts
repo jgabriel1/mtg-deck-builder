@@ -3,8 +3,6 @@ import map from 'lodash/map';
 import { NextApiHandler } from 'next';
 import { parseHTML } from 'linkedom';
 import currency from 'currency.js';
-import fs from 'fs';
-import path from 'path';
 
 const ligaClient = axios.create({
   baseURL: 'https://www.ligamagic.com.br',
