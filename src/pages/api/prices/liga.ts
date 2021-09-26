@@ -1,7 +1,10 @@
 import axios from 'axios';
+import map from 'lodash/map';
 import { NextApiHandler } from 'next';
 import { parseHTML } from 'linkedom';
 import currency from 'currency.js';
+import fs from 'fs';
+import path from 'path';
 
 const ligaClient = axios.create({
   baseURL: 'https://www.ligamagic.com.br',
@@ -13,14 +16,18 @@ const liga: NextApiHandler = async (req, res) => {
   const urlSafeCardName = encodeURIComponent(cardName);
 
   const { data } = await ligaClient.get(
-    `/?view=cards/card&card=${urlSafeCardName}`
+    `/?view=cards/card&card=${urlSafeCardName}&show=4` // Using bazaar prices
   );
 
+  // Find price strings in document
   const { document } = parseHTML(data);
 
-  const priceString = document.querySelector(
-    'div.col-prc.col-prc-menor'
-  )?.textContent;
+  const priceInstances = map(
+    document.querySelectorAll('.estoque-linha'),
+    item => item.querySelector('.e-mob-preco')?.textContent
+  );
+
+  const priceString = priceInstances[0];
 
   const price = currency(priceString || 0, {
     symbol: 'R$',
