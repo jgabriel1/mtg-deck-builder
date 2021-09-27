@@ -15,7 +15,7 @@ const Home = () => {
   };
 
   return (
-    <Flex flexDir="column" h="100vh">
+    <Flex flexDir="column">
       <Header />
 
       <Container maxW="container.lg">

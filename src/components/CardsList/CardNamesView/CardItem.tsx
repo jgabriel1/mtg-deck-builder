@@ -1,6 +1,7 @@
 import { Button, Grid, GridItem, Text } from '@chakra-ui/react';
 import { CardImagePopover } from '../CardImagePopover';
 import { ManaSymbol } from '../../ManaSymbol';
+import { useCardPrice } from '../../../hooks/prices';
 
 type CardItemProps = {
   quantity?: number;
@@ -15,6 +16,8 @@ export const CardItem = ({
   quantity = 1,
   imageUrl,
 }: CardItemProps) => {
+  const price = useCardPrice(name);
+
   return (
     <CardImagePopover imageUrl={imageUrl}>
       <Button
@@ -29,7 +32,7 @@ export const CardItem = ({
             <Text textAlign="start">{quantity}</Text>
           </GridItem>
 
-          <GridItem colSpan={12}>
+          <GridItem colSpan={9}>
             <Text textAlign="start" textOverflow="ellipsis">
               {name}
             </Text>
@@ -37,6 +40,22 @@ export const CardItem = ({
 
           <GridItem colSpan={3}>
             <ManaSymbol costString={mana_cost} fontSize="xs" />
+          </GridItem>
+
+          <GridItem colSpan={3}>
+            <Text
+              fontFamily="monospace"
+              textAlign="end"
+              textOverflow="ellipsis"
+            >
+              {price
+                ? price.value.toLocaleString('pt-BR', {
+                    currency: 'BRL',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
+                : '0,00'}
+            </Text>
           </GridItem>
         </Grid>
       </Button>

@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, useBreakpointValue } from '@chakra-ui/react';
 import { CardBlockData } from '../../../types';
 import { CardBlock } from './CardBlock';
 
@@ -7,14 +7,23 @@ type CardNamesListProps = {
 };
 
 export const CardNamesList = ({ blocks }: CardNamesListProps) => {
+  const numberOfColumns = useBreakpointValue({
+    md: 1,
+    lg: 2,
+  });
+
   return (
-    <Box mx="auto" sx={{ columnCount: 3, columnGap: '8px' }} pb="8">
+    <Box
+      mx="auto"
+      sx={{ columnCount: numberOfColumns, columnGap: '8px' }}
+      pb="8"
+    >
       {blocks.map(block => (
         <Box
           key={`cardListBlock:${block.title}`}
           w="100%"
           mb={2}
-          display="inline"
+          display="inline-block"
           borderRadius="lg"
         >
           <CardBlock title={block.title} cards={block.cards} />
